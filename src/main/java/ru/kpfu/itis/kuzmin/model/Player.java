@@ -1,6 +1,6 @@
 package ru.kpfu.itis.kuzmin.model;
 
-import ru.kpfu.itis.kuzmin.model.Role;
+import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 
 public class Player {
     private boolean right;
@@ -11,10 +11,12 @@ public class Player {
 
     private double mouseX;
     private double mouseY;
+    private Weapon weapon;
     private Role role;
 
-    public Player(Role role) {
+    public Player(Role role, Weapon weapon) {
         this.role = role;
+        this.weapon = weapon;
     }
     public boolean isRight() {
         return right;
@@ -78,5 +80,13 @@ public class Player {
 
     public void setMouseY(double mouseY) {
         this.mouseY = mouseY;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 }

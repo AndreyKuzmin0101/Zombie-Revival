@@ -1,18 +1,30 @@
-package ru.kpfu.itis.kuzmin.model;
+package ru.kpfu.itis.kuzmin.model.gun;
 
 import javafx.scene.image.ImageView;
 
 public class Bullet {
+    private int damage;
     private int velocity;
     private double vectorX;
     private double vectorY;
+    private int lifetime;
+    private boolean inactive;
     private ImageView imageView;
-
-    public Bullet(int velocity, double vectorX, double vectorY, ImageView imageView) {
+    public Bullet(int damage, int velocity, double vectorX, double vectorY, ImageView imageView) {
         this.velocity = velocity;
         this.vectorX = vectorX;
         this.vectorY = vectorY;
         this.imageView = imageView;
+        lifetime = 500;
+        inactive = false;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
     public int getVelocity() {
@@ -46,4 +58,7 @@ public class Bullet {
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
     }
+
+    public void reduceLifeTime() { lifetime -= 1; }
+    public int getLifetime() { return lifetime; }
 }

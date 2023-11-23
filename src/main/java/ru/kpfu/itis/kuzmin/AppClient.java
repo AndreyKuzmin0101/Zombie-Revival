@@ -7,22 +7,30 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
+import ru.kpfu.itis.kuzmin.model.gun.Revolver;
 import ru.kpfu.itis.kuzmin.model.Shooter;
 
-public class Game extends Application {
+import java.net.InetAddress;
+
+public class AppClient extends Application {
+    private static final String HOST = "127.0.0.1";
+    private static final int PORT = 5555;
     public static void main(String[] args) {
         launch();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(Game.class.getResource("/level_view.fxml"));
+//        Client client = new Client(InetAddress.getByName(HOST), PORT);
+//        client.start();
+
+        FXMLLoader loader = new FXMLLoader(AppClient.class.getResource("/level_view.fxml"));
         AnchorPane pane = loader.load();
 
-
-        Player player = new Player(new Shooter());
+        Player player = new Player(new Shooter(), new Revolver());
         LevelController.player = player;
 
         Scene scene = new Scene(pane);
@@ -58,20 +66,23 @@ public class Game extends Application {
         });
         scene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             player.setShoot(true);
+
         });
+
 
         scene.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
             player.setShoot(false);
         });
-        scene.addEventFilter(MouseEvent.MOUSE_MOVED, event -> {
+        scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, event -> {
             player.setMouseX(event.getX());
             player.setMouseY(event.getY());
         });
 
+        stage.centerOnScreen();
         stage.setScene(scene);
-        stage.setAlwaysOnTop(true);
+        stage.setWidth(600);
+        stage.setHeight(600);
         stage.setTitle("Зомби Возрождение");
-        stage.sizeToScene();
         stage.show();
 
     }
