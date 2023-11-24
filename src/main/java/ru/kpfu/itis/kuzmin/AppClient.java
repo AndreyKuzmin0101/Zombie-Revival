@@ -10,8 +10,7 @@ import javafx.stage.Stage;
 import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
-import ru.kpfu.itis.kuzmin.model.gun.Revolver;
-import ru.kpfu.itis.kuzmin.model.Shooter;
+import ru.kpfu.itis.kuzmin.protocol.Message;
 
 import java.net.InetAddress;
 
@@ -24,17 +23,18 @@ public class AppClient extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        Client client = new Client(InetAddress.getByName(HOST), PORT);
-//        client.start();
+        Client client = new Client(InetAddress.getByName(HOST), PORT);
+
+        // лобби
+        // ...
+
+        Player player = client.startGame(new Message());
 
         FXMLLoader loader = new FXMLLoader(AppClient.class.getResource("/level_view.fxml"));
         AnchorPane pane = loader.load();
-
-        Player player = new Player(new Shooter(), new Revolver());
-        LevelController.player = player;
-
         Scene scene = new Scene(pane);
         LevelController.scene = scene;
+
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.A) {
@@ -77,11 +77,9 @@ public class AppClient extends Application {
             player.setMouseX(event.getX());
             player.setMouseY(event.getY());
         });
-
+        stage.setMaximized(true);
         stage.centerOnScreen();
         stage.setScene(scene);
-        stage.setWidth(600);
-        stage.setHeight(600);
         stage.setTitle("Зомби Возрождение");
         stage.show();
 

@@ -3,14 +3,14 @@ package ru.kpfu.itis.kuzmin.model.gun;
 import javafx.scene.image.ImageView;
 
 public class Bullet {
-    private int damage;
+    private double damage;
     private int velocity;
     private double vectorX;
     private double vectorY;
     private int lifetime;
     private boolean inactive;
     private ImageView imageView;
-    public Bullet(int damage, int velocity, double vectorX, double vectorY, ImageView imageView) {
+    public Bullet(double damage, int velocity, double vectorX, double vectorY, ImageView imageView) {
         this.velocity = velocity;
         this.vectorX = vectorX;
         this.vectorY = vectorY;
@@ -19,11 +19,11 @@ public class Bullet {
         inactive = false;
     }
 
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(double damage) {
         this.damage = damage;
     }
 

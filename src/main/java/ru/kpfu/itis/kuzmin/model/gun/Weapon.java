@@ -2,19 +2,19 @@ package ru.kpfu.itis.kuzmin.model.gun;
 
 public class Weapon {
     private final int rateOfFire;
-    private int damage;
+    private double damage;
     private int interval;
 
-    public Weapon(int damage, int rateOfFire) {
+    public Weapon(double damage, int rateOfFire) {
         this.rateOfFire = rateOfFire;
         interval = 0;
     }
 
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    public void setDamage(double damage) {
         this.damage = damage;
     }
 
