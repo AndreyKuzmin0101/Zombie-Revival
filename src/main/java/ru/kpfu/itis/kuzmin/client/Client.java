@@ -1,5 +1,6 @@
 package ru.kpfu.itis.kuzmin.client;
 
+import ru.kpfu.itis.kuzmin.AppClient;
 import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
@@ -9,6 +10,7 @@ import ru.kpfu.itis.kuzmin.model.role.Engineer;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.role.Shooter;
 import ru.kpfu.itis.kuzmin.protocol.Message;
+import ru.kpfu.itis.kuzmin.view.LevelView;
 
 import javax.swing.*;
 import java.io.*;
@@ -17,32 +19,32 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 
-// Заглушка под клиент
 public class Client implements IClient{
-
+    private AppClient appClient;
     private Socket socket;
     private final InetAddress host;
     private final int port;
     private ClientThread thread;
     private Game game;
 
-    public Client(InetAddress host, int port) {
+    public Client(InetAddress host, int port, AppClient appClient) {
         this.host = host;
         this.port = port;
+        this.appClient = appClient;
     }
     @Override
     public void start() {
         connect();
-        BufferedReader input;
-        BufferedWriter output;
+        BufferedInputStream input;
+        BufferedOutputStream output;
         try {
-            input = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-            output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+            input = new BufferedInputStream(socket.getInputStream());
+            output = new BufferedOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        thread = new ClientThread(input, output);
+        thread = new ClientThread(input, output, this);
         new Thread(thread).start();
     }
     @Override
@@ -56,21 +58,19 @@ public class Client implements IClient{
     }
 
     @Override
-    public Player startGame(Message message) {
-        // парсинг message
+    public void startGame(Role role) throws IOException {
+        Role teammateRole;
+        if (role.getRoleCode() == Role.SHOOTER) teammateRole = new Engineer();
+        else teammateRole = new Shooter();
 
-        Role playerRole = new Shooter();
-        Role teammateRole = new Engineer();
-
-        Player player = new Player(playerRole, playerRole.getDefaultWeapon());
+        Player player = new Player(role, role.getDefaultWeapon());
         World world = new World();
         Teammate teammate = new Teammate(teammateRole, teammateRole.getDefaultWeapon());
-
 
         this.game = new Game(1, world, player, teammate);
         this.game.initController();
 
-        return player;
+        appClient.setView(new LevelView(player));
     }
 
     @Override
@@ -78,37 +78,47 @@ public class Client implements IClient{
         this.game = null;
     }
 
-
-
     @Override
     public void sendMessage(Message message) {
         // Отправка данных
     }
 
+    public void handleMessage(Message message) throws IOException {
+        if (message.getType() == Message.START_GAME) {
+            byte[] data = message.getData();
+            if(data[0] == 0) {
+                startGame(new Shooter());
+            } else {
+                startGame(new Engineer());
+            }
+        }
+    }
+
     private static class ClientThread implements Runnable{
 
-        private BufferedReader input;
-        private BufferedWriter output;
+        private BufferedInputStream input;
+        private BufferedOutputStream output;
+        private Client client;
 
-        public ClientThread(BufferedReader input, BufferedWriter output) {
+        public ClientThread(BufferedInputStream input, BufferedOutputStream output, Client client) {
             this.input = input;
             this.output = output;
+            this.client = client;
         }
 
         @Override
         public void run() {
             try {
                 while (true) {
-                    String message = input.readLine();
-
-                    // Обработка принятых данных
+                    Message message = Message.readMessage(input);
+                    client.handleMessage(message);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        public BufferedWriter getOutput() {
+        public BufferedOutputStream getOutput() {
             return output;
         }
     }
