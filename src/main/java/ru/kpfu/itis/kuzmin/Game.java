@@ -27,5 +27,17 @@ public class Game {
         player.move();
         world.moveBullets();
         player.shoot(world);
+        System.out.println(player.getPositionX() + " " + player.getPositionY());
+        System.out.println(teammate.getPositionX() + " " + teammate.getPositionY());
+    }
+
+
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Teammate getTeammate() {
+        return teammate;
     }
 }

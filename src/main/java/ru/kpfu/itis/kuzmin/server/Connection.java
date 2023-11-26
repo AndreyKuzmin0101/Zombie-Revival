@@ -15,6 +15,8 @@ public class Connection implements Runnable{
     private BufferedOutputStream output;
     private String username;
 
+    private Lobby lobby;
+
     public Connection(Server server, Socket socket) {
         try {
             this.socket = socket;
@@ -50,5 +52,13 @@ public class Connection implements Runnable{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

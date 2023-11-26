@@ -42,11 +42,14 @@ public class Server {
     }
 
     public void handleMessage(Message message, Connection connection) {
-        // обработка сообщений от пользователей
+        if (message.getType() >= 2) {
+            connection.getLobby().forwardMessage(message, connection);
+        }
     }
 
     public static void main(String[] args) {
         Server server = new Server();
         server.start();
     }
+
 }

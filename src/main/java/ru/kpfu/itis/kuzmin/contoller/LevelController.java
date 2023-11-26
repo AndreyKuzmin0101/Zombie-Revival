@@ -1,6 +1,7 @@
 package ru.kpfu.itis.kuzmin.contoller;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,7 @@ import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 
+import java.io.IOException;
 
 
 public class LevelController {
@@ -45,7 +47,10 @@ public class LevelController {
 
 
     public static void addBullet(ImageView bulletView) {
-        ((AnchorPane) scene.getRoot()).getChildren().add(bulletView);
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().add(bulletView);
+        });
+
     }
 
     public static void removeBullet(ImageView bulletView) {

@@ -6,6 +6,7 @@ import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
+import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.role.Engineer;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.role.Shooter;
@@ -16,7 +17,9 @@ import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 
 public class Client implements IClient{
@@ -63,7 +66,7 @@ public class Client implements IClient{
         if (role.getRoleCode() == Role.SHOOTER) teammateRole = new Engineer();
         else teammateRole = new Shooter();
 
-        Player player = new Player(role, role.getDefaultWeapon());
+        Player player = new Player(this, role, role.getDefaultWeapon());
         World world = new World();
         Teammate teammate = new Teammate(teammateRole, teammateRole.getDefaultWeapon());
 
@@ -78,10 +81,7 @@ public class Client implements IClient{
         this.game = null;
     }
 
-    @Override
-    public void sendMessage(Message message) {
-        // Отправка данных
-    }
+
 
     public void handleMessage(Message message) throws IOException {
         if (message.getType() == Message.START_GAME) {
@@ -91,35 +91,57 @@ public class Client implements IClient{
             } else {
                 startGame(new Engineer());
             }
+        } else if (message.getType() == Message.MOVE) {
+            ByteBuffer byteBuffer = ByteBuffer.allocate(16).put(message.getData());
+            byteBuffer.rewind();
+
+            double positionX = byteBuffer.getDouble();
+            double positionY = byteBuffer.getDouble();
+
+            game.getTeammate().move(positionX, positionY);
+        } else if (message.getType() == Message.SHOT) {
+            ByteBuffer byteBuffer = ByteBuffer.allocate(16).put(message.getData());
+            byteBuffer.rewind();
+
+            double vectorX = byteBuffer.getDouble();
+            double vectorY = byteBuffer.getDouble();
+
+            game.getTeammate().shoot(game.getWorld(), vectorX, vectorY);
         }
     }
 
-    private static class ClientThread implements Runnable{
+    @Override
+    public void sendNewPosition(double positionX, double positionY) {
+        byte type = Message.MOVE;
 
-        private BufferedInputStream input;
-        private BufferedOutputStream output;
-        private Client client;
+        byte[] data = ByteBuffer.allocate(16)
+                .putDouble(positionX)
+                .putDouble(positionY)
+                .array();
 
-        public ClientThread(BufferedInputStream input, BufferedOutputStream output, Client client) {
-            this.input = input;
-            this.output = output;
-            this.client = client;
-        }
-
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    Message message = Message.readMessage(input);
-                    client.handleMessage(message);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public BufferedOutputStream getOutput() {
-            return output;
-        }
+        sendMessage(Message.createMessage(type, data));
     }
+
+   @Override
+    public void sendShot(double vectorX, double vectorY) {
+        byte type = Message.SHOT;
+
+        byte[] data = ByteBuffer.allocate(16)
+                .putDouble(vectorX)
+                .putDouble(vectorY)
+                .array();
+
+        sendMessage(Message.createMessage(type, data));
+    }
+
+    private void sendMessage(Message message) {
+        try {
+            thread.getOutput().write(Message.getBytes(message));
+            thread.getOutput().flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

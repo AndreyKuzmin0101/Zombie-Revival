@@ -2,12 +2,14 @@ package ru.kpfu.itis.kuzmin.protocol;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-
+import java.util.Arrays;
 
 
 // Message contents: [TYPE (1), DATA LENGTH(1), DATA(?)]
 public class Message {
     public static final byte START_GAME = 1;
+    public static final byte MOVE = 2;
+    public static final byte SHOT = 3;
 
     public static Message createMessage(byte messageType, byte[] data) {
         return new Message(messageType, data);
@@ -21,7 +23,7 @@ public class Message {
     }
 
     public static byte[] getBytes(Message message) {
-        int rawMessageLength = 1 + 4 + message.getData().length;
+        int rawMessageLength = 1 + 1 + message.getData().length;
         byte[] bytes = new byte[rawMessageLength];
         int j = 0;
         bytes[j++] = message.getType();

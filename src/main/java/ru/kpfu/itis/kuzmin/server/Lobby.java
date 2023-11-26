@@ -1,5 +1,6 @@
 package ru.kpfu.itis.kuzmin.server;
 
+import javafx.scene.Parent;
 import ru.kpfu.itis.kuzmin.protocol.Message;
 
 
@@ -13,6 +14,9 @@ public class Lobby {
         this.server = server;
         this.player1 = player1;
         this.player2 = player2;
+
+        this.player1.setLobby(this);
+        this.player2.setLobby(this);
     }
 
     public void startGame() {
@@ -21,4 +25,13 @@ public class Lobby {
         player1.sendMessage(message1);
         player2.sendMessage(message2);
     }
+
+    public void forwardMessage(Message message, Connection connection) {
+        if (player1 == connection) {
+            player2.sendMessage(message);
+        } else {
+            player1.sendMessage(message);
+        }
+    }
+
 }

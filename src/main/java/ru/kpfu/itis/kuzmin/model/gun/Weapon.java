@@ -2,11 +2,14 @@ package ru.kpfu.itis.kuzmin.model.gun;
 
 public class Weapon {
     private final int rateOfFire;
+    private int bulletVelocity;
     private double damage;
     private int interval;
 
-    public Weapon(double damage, int rateOfFire) {
+    public Weapon(double damage, int rateOfFire, int bulletVelocity) {
+        this.damage = damage;
         this.rateOfFire = rateOfFire;
+        this.bulletVelocity = bulletVelocity;
         interval = 0;
     }
 
@@ -27,5 +30,13 @@ public class Weapon {
 
     public int getInterval() {
         return interval;
+    }
+
+    public int getBulletVelocity() {
+        return bulletVelocity;
+    }
+
+    public void setBulletVelocity(int bulletVelocity) {
+        this.bulletVelocity = bulletVelocity;
     }
 }

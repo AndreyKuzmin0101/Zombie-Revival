@@ -8,8 +8,9 @@ import java.io.IOException;
 
 public interface IClient {
     void connect();
-    void sendMessage(Message message);
     void start();
     void startGame(Role role) throws IOException;
     void finishGame();
+    void sendNewPosition(double positionX, double positionY);
+    void sendShot(double vectorX, double vectorY);
 }
