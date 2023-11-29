@@ -74,6 +74,7 @@ public class Client implements IClient{
         this.game.initController();
 
         appClient.setView(new LevelView(player));
+
     }
 
     @Override
@@ -92,45 +93,44 @@ public class Client implements IClient{
                 startGame(new Engineer());
             }
         } else if (message.getType() == Message.MOVE) {
-            ByteBuffer byteBuffer = ByteBuffer.allocate(16).put(message.getData());
+            ByteBuffer byteBuffer = ByteBuffer.allocate(8).put(message.getData());
             byteBuffer.rewind();
 
-            double positionX = byteBuffer.getDouble();
-            double positionY = byteBuffer.getDouble();
+            double positionX = byteBuffer.getFloat();
+            double positionY = byteBuffer.getFloat();
 
             game.getTeammate().move(positionX, positionY);
         } else if (message.getType() == Message.SHOT) {
-            ByteBuffer byteBuffer = ByteBuffer.allocate(16).put(message.getData());
+            ByteBuffer byteBuffer = ByteBuffer.allocate(8).put(message.getData());
             byteBuffer.rewind();
 
-            double vectorX = byteBuffer.getDouble();
-            double vectorY = byteBuffer.getDouble();
+            double vectorX = byteBuffer.getFloat();
+            double vectorY = byteBuffer.getFloat();
 
             game.getTeammate().shoot(game.getWorld(), vectorX, vectorY);
         }
     }
 
     @Override
-    public void sendNewPosition(double positionX, double positionY) {
+    public void sendNewPosition(float positionX, float positionY) {
         byte type = Message.MOVE;
 
-        byte[] data = ByteBuffer.allocate(16)
-                .putDouble(positionX)
-                .putDouble(positionY)
+        byte[] data = ByteBuffer.allocate(8)
+                .putFloat(positionX)
+                .putFloat(positionY)
                 .array();
 
         sendMessage(Message.createMessage(type, data));
     }
 
    @Override
-    public void sendShot(double vectorX, double vectorY) {
+    public void sendShot(float vectorX, float vectorY) {
         byte type = Message.SHOT;
 
-        byte[] data = ByteBuffer.allocate(16)
-                .putDouble(vectorX)
-                .putDouble(vectorY)
+        byte[] data = ByteBuffer.allocate(8)
+                .putFloat(vectorX)
+                .putFloat(vectorY)
                 .array();
-
         sendMessage(Message.createMessage(type, data));
     }
 

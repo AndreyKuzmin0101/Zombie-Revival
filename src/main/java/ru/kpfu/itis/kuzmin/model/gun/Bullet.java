@@ -11,6 +11,7 @@ public class Bullet {
     private boolean inactive;
     private ImageView imageView;
     public Bullet(double damage, int velocity, double vectorX, double vectorY, ImageView imageView) {
+        this.damage = damage;
         this.velocity = velocity;
         this.vectorX = vectorX;
         this.vectorY = vectorY;

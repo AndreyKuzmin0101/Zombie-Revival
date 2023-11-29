@@ -25,10 +25,8 @@ public class Game {
     }
     public void prepareOneFrame() {
         player.move();
-        world.moveBullets();
         player.shoot(world);
-        System.out.println(player.getPositionX() + " " + player.getPositionY());
-        System.out.println(teammate.getPositionX() + " " + teammate.getPositionY());
+        world.moveBullets();
     }
 
 

@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import ru.kpfu.itis.kuzmin.Game;
@@ -18,6 +19,9 @@ import java.io.IOException;
 public class LevelController {
     @FXML
     private ImageView shooter, engineer;
+    @FXML
+    private ProgressBar shooterHp, engineerHp;
+
     public static Player player;
     public static World world;
     public static Teammate teammate;
@@ -29,13 +33,18 @@ public class LevelController {
     void initialize() {
         if (player.getRole().getRoleCode() == Role.SHOOTER) {
             player.getRole().setImage(shooter);
+            player.setHpProgressBar(shooterHp);
+
             teammate.getRole().setImage(engineer);
+            teammate.setHpProgressBar(engineerHp);
 
         } else {
             player.getRole().setImage(engineer);
-            teammate.getRole().setImage(shooter);
-        }
+            player.setHpProgressBar(engineerHp);
 
+            teammate.getRole().setImage(shooter);
+            teammate.setHpProgressBar(shooterHp);
+        }
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -54,6 +63,9 @@ public class LevelController {
     }
 
     public static void removeBullet(ImageView bulletView) {
-        ((AnchorPane) scene.getRoot()).getChildren().remove(bulletView);
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().remove(bulletView);
+        });
+
     }
 }

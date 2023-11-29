@@ -11,6 +11,6 @@ public interface IClient {
     void start();
     void startGame(Role role) throws IOException;
     void finishGame();
-    void sendNewPosition(double positionX, double positionY);
-    void sendShot(double vectorX, double vectorY);
+    void sendNewPosition(float positionX, float positionY);
+    void sendShot(float vectorX, float vectorY);
 }

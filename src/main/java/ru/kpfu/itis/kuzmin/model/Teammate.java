@@ -1,5 +1,6 @@
 package ru.kpfu.itis.kuzmin.model;
 
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.gun.Bullet;
@@ -7,6 +8,8 @@ import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 
 public class Teammate {
+    private ProgressBar hp;
+
     private Weapon weapon;
     private Role role;
 
@@ -38,6 +41,7 @@ public class Teammate {
 
     public void setPositionX(double positionX) {
         role.getImage().setLayoutX(positionX);
+        hp.setLayoutX(positionX);
     }
 
     public double getPositionY() {
@@ -46,6 +50,19 @@ public class Teammate {
 
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
+        hp.setLayoutY(positionY-20);
+    }
+
+    public double getHp() {
+        return hp.getProgress();
+    }
+
+    public void setHp(double hp) {
+        this.hp.setProgress(hp);
+    }
+
+    public void setHpProgressBar(ProgressBar progressBar) {
+        this.hp = progressBar;
     }
 
     public Weapon getWeapon() {

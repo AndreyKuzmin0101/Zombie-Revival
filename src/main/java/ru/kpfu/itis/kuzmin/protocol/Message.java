@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 // Message contents: [TYPE (1), DATA LENGTH(1), DATA(?)]
 public class Message {
+    public static final byte SPAWN_ZOMBIE = -1;
     public static final byte START_GAME = 1;
     public static final byte MOVE = 2;
     public static final byte SHOT = 3;

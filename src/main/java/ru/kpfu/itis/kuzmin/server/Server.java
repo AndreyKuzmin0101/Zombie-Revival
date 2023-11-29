@@ -30,7 +30,7 @@ public class Server {
             client1 = new Connection(this, s1);
             client2 = new Connection(this, s2);
 
-            lobby = new Lobby(this, client1, client2);
+            lobby = new Lobby(this, client1, client2, 1);
 
 
 

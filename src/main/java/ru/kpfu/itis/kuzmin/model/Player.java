@@ -1,7 +1,7 @@
 package ru.kpfu.itis.kuzmin.model;
 
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.gun.Bullet;
@@ -9,6 +9,8 @@ import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 
 public class Player {
+    private ProgressBar hp;
+
     private boolean right;
     private boolean left;
     private boolean up;
@@ -47,7 +49,7 @@ public class Player {
             double vectorX = dx/sqrt;
             double vectorY = dy/sqrt;
 
-            client.sendShot(vectorX, vectorY);
+            client.sendShot((float) vectorX, (float) vectorY);
 
             Bullet bullet = new Bullet(weapon.getDamage(), weapon.getBulletVelocity(), vectorX, vectorY, bulletView);
 
@@ -63,19 +65,19 @@ public class Player {
     public void move() {
         if (left && getPositionX() > 0) {
             setPositionX(getPositionX() - role.getSpeed());
-            client.sendNewPosition(getPositionX(), getPositionY());
+            client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (right && getPositionX() < 1480) {
             setPositionX(getPositionX() + role.getSpeed());
-            client.sendNewPosition(getPositionX(), getPositionY());
+            client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (up && getPositionY() > 0) {
             setPositionY(getPositionY() - role.getSpeed());
-            client.sendNewPosition(getPositionX(), getPositionY());
+            client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (down && getPositionY() < 750) {
             setPositionY(getPositionY() + role.getSpeed());
-            client.sendNewPosition(getPositionX(), getPositionY());
+            client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
     }
 
@@ -85,7 +87,7 @@ public class Player {
 
     public void setPositionX(double positionX) {
         role.getImage().setLayoutX(positionX);
-
+        hp.setLayoutX(positionX);
     }
 
     public double getPositionY() {
@@ -94,8 +96,20 @@ public class Player {
 
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
+        hp.setLayoutY(positionY-20);
     }
 
+    public double getHp() {
+        return hp.getProgress();
+    }
+
+    public void setHp(double hp) {
+        this.hp.setProgress(hp);
+    }
+
+    public void setHpProgressBar(ProgressBar progressBar) {
+        this.hp = progressBar;
+    }
 
     public void setRight(boolean right) {
         this.right = right;

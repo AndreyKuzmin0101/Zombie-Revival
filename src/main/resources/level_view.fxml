@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,10 +17,12 @@
             <Image url="@images/shooter.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="engineer" fitHeight="62.0" fitWidth="53.0" layoutX="823.0" layoutY="305.0">
+      <ImageView fx:id="engineer" fitHeight="62.0" fitWidth="53.0" layoutX="823.0" layoutY="296.0">
          <image>
             <Image url="@images/engineer.png" />
          </image>
       </ImageView>
+      <ProgressBar fx:id="shooterHp" layoutX="722.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
+      <ProgressBar fx:id="engineerHp" layoutX="823.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
    </children>
 </AnchorPane>
