@@ -11,6 +11,7 @@ public class Message {
     public static final byte START_GAME = 1;
     public static final byte MOVE = 2;
     public static final byte SHOT = 3;
+    public static final byte ZOMBIE_DIE = 4;
 
     public static Message createMessage(byte messageType, byte[] data) {
         return new Message(messageType, data);

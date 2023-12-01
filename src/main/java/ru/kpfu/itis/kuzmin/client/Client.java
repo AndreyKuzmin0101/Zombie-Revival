@@ -11,6 +11,7 @@ import ru.kpfu.itis.kuzmin.model.role.Engineer;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.role.Shooter;
 import ru.kpfu.itis.kuzmin.protocol.Message;
+import ru.kpfu.itis.kuzmin.util.ZombieFactory;
 import ru.kpfu.itis.kuzmin.view.LevelView;
 
 import javax.swing.*;
@@ -108,6 +109,17 @@ public class Client implements IClient{
             double vectorY = byteBuffer.getFloat();
 
             game.getTeammate().shoot(game.getWorld(), vectorX, vectorY);
+        } else if (message.getType() == Message.SPAWN_ZOMBIE) {
+            ByteBuffer byteBuffer = ByteBuffer.allocate(4+1+8).put(message.getData());
+            byteBuffer.rewind();
+
+            int id = byteBuffer.getInt();
+            byte type = byteBuffer.get();
+            float positionX = byteBuffer.getFloat();
+            float positionY = byteBuffer.getFloat();
+
+            ZombieFactory zombieFactory = new ZombieFactory();
+            game.getWorld().addZombie(zombieFactory.createZombie(id, type, positionX, positionY));
         }
     }
 

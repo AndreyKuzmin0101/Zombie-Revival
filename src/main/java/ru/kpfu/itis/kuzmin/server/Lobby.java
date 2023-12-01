@@ -10,6 +10,7 @@ public class Lobby implements Runnable{
     private Thread thread;
     private Connection player1;
     private Connection player2;
+    private Level level;
     private int lvl;
 
     public Lobby(Server server, Connection player1, Connection player2, int lvl) {
@@ -28,7 +29,7 @@ public class Lobby implements Runnable{
     @Override
     public void run() {
         //TODO: фабрика уровней
-        Level level = new Level(this);
+        level = new Level(this);
         level.startGame();
     }
 
@@ -52,4 +53,7 @@ public class Lobby implements Runnable{
         player2.sendMessage(message);
     }
 
+    public Level getLevel() {
+        return level;
+    }
 }

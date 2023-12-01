@@ -27,6 +27,9 @@ public class Game {
         player.move();
         player.shoot(world);
         world.moveBullets();
+        world.deleteOldBullets();
+        world.checkIntersectBulletsAndZombies();
+        world.moveZombies();
     }
 
 

@@ -66,6 +66,11 @@ public class LevelController {
         Platform.runLater(() -> {
             ((AnchorPane) scene.getRoot()).getChildren().remove(bulletView);
         });
+    }
 
+    public static void removeZombie(ImageView zombieView) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().remove(zombieView);
+        });
     }
 }

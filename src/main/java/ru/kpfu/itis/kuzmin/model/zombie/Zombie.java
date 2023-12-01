@@ -1,19 +1,64 @@
 package ru.kpfu.itis.kuzmin.model.zombie;
 
+
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.ImageView;
+import ru.kpfu.itis.kuzmin.AppClient;
+import ru.kpfu.itis.kuzmin.model.World;
+
 public abstract class Zombie {
     public static final byte SHAMBLING_CITIZEN = 1;
     private int id;
     private int type;
-    private int hp;
     private int damage;
     private float speed;
+    private ImageView image;
+    private ProgressBar hp;
 
-    public Zombie(int id, int type, int hp, int damage, float speed) {
+    public Zombie(int id, int type, int hp, int damage, float speed, double positionX, double positionY) {
         this.id = id;
         this.type = type;
-        this.hp = hp;
         this.damage = damage;
         this.speed = speed;
+
+        this.image = new ImageView("images/shambling_citizen.png");
+        image.setFitWidth(53);
+        image.setFitHeight(70);
+
+        this.hp = new ProgressBar(hp);
+
+        setPositionX(positionX);
+        setPositionY(positionY);
+    }
+
+    public double getPositionX() {
+        return image.getLayoutX();
+    }
+
+    public void setPositionX(double positionX) {
+        image.setLayoutX(positionX);
+        hp.setLayoutX(positionX);
+    }
+
+    public double getPositionY() {
+        return image.getLayoutY();
+    }
+
+    public void setPositionY(double positionY) {
+        image.setLayoutY(positionY);
+        hp.setLayoutY(positionY-20);
+    }
+
+    public void move(World world) {
+//        НУЖНО РЕАЛИЗОВАТЬ
+    }
+
+    public ImageView getImage() {
+        return image;
+    }
+
+    public void setImage(ImageView image) {
+        this.image = image;
     }
 
     public int getId() {
@@ -32,12 +77,12 @@ public abstract class Zombie {
         this.type = type;
     }
 
-    public int getHp() {
-        return hp;
+    public double getHp() {
+        return hp.getProgress();
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    public void setHp(double hp) {
+        this.hp.setProgress(hp);
     }
 
     public int getDamage() {
@@ -55,4 +100,6 @@ public abstract class Zombie {
     public void setSpeed(float speed) {
         this.speed = speed;
     }
+
+
 }

@@ -12,12 +12,12 @@
             <Image url="@images/background_1_lvl.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="shooter" layoutX="722.0" layoutY="296.0">
+      <ImageView fx:id="shooter" fitHeight="70.0" fitWidth="53.0" layoutX="722.0" layoutY="296.0">
          <image>
             <Image url="@images/shooter.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="engineer" fitHeight="62.0" fitWidth="53.0" layoutX="823.0" layoutY="296.0">
+      <ImageView fx:id="engineer" fitHeight="70.0" fitWidth="53.0" layoutX="823.0" layoutY="296.0">
          <image>
             <Image url="@images/engineer.png" />
          </image>

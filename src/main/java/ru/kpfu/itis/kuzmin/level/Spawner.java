@@ -1,21 +1,21 @@
 package ru.kpfu.itis.kuzmin.level;
 
-import ru.kpfu.itis.kuzmin.model.zombie.ShamblingCitizen;
-import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
+import ru.kpfu.itis.kuzmin.model.World;
+import ru.kpfu.itis.kuzmin.protocol.ZombieModel;
 
 import java.util.*;
 
 public class Spawner {
     private boolean active;
-    private Queue<Zombie> zombies;
+    private Queue<ZombieModel> zombies;
     private Queue<Integer> intervals;
 
-    public Spawner(Queue<Zombie> zombies, Queue<Integer> intervals) {
+    private Spawner(Queue<ZombieModel> zombies, Queue<Integer> intervals) {
         this.zombies = zombies;
         this.intervals = intervals;
         active = true;
     }
-    public Zombie getZombie() {
+    public ZombieModel getZombie() {
         if (zombies.size() == 0) {
             active = false;
             return null;
@@ -30,14 +30,13 @@ public class Spawner {
         return zombies.remove();
     }
 
-    //TODO: фабрика
     public static Spawner getInstance(int lvl) {
-        Queue<Zombie> zombies = new PriorityQueue<>();
-        Queue<Integer> intervals = new PriorityQueue<>();
+        Queue<ZombieModel> zombies = new LinkedList<>();
+        Queue<Integer> intervals = new LinkedList<>();
         switch (lvl) {
             case 1:
                 for (int i = 0; i < 30; i++) {
-                    zombies.add(new ShamblingCitizen(i));
+                    zombies.add(new ZombieModel(i, (byte) 1, (float) World.getZombieStartPositionX(), (float) World.getZombieStartPositionY()));
                     intervals.add(3000);
                 }
                 break;
@@ -48,5 +47,9 @@ public class Spawner {
 
     public boolean isActive() {
         return active;
+    }
+
+    public Queue<ZombieModel> getZombies() {
+        return zombies;
     }
 }

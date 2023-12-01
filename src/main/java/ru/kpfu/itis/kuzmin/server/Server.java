@@ -5,6 +5,7 @@ import ru.kpfu.itis.kuzmin.protocol.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,8 +43,12 @@ public class Server {
     }
 
     public void handleMessage(Message message, Connection connection) {
-        if (message.getType() >= 2) {
+        if (message.getType() == Message.MOVE || message.getType() == Message.SHOT) {
             connection.getLobby().forwardMessage(message, connection);
+        } else if (message.getType() == Message.ZOMBIE_DIE) {
+            int id = ByteBuffer.allocate(4).put(message.getData()).getInt();
+
+            connection.getLobby().getLevel().deleteZombie(id);
         }
     }
 
