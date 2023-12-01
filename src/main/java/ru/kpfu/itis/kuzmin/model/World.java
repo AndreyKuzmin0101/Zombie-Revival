@@ -1,16 +1,21 @@
 package ru.kpfu.itis.kuzmin.model;
 
+import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 public class World {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Zombie> zombies = new ArrayList<>();
+    private ArrayList<Integer> deadZombieIds = new ArrayList<>();
+    private Client client;
+
+    public World(Client client) {
+        this.client = client;
+    }
 
     public void moveBullets() {
 
@@ -44,15 +49,36 @@ public class World {
             Iterator<Zombie> zombieIterator = zombies.iterator();
             while (zombieIterator.hasNext()) {
                 Zombie zombie = zombieIterator.next();
-                if (bullet.getImageView().getLayoutBounds().intersects(zombie.getImage().getLayoutBounds())) {
-                    zombieIterator.remove();
-                    LevelController.removeZombie(zombie.getImage());
+                if (bullet.getImageView().getBoundsInParent().intersects(zombie.getImage().getBoundsInParent())) {
+                    zombie.setHp(zombie.getHp() - bullet.getDamage());
+                    if (zombie.getHp() <= 0) {
+                        zombieIterator.remove();
+                        LevelController.removeZombie(zombie);
+                        client.sendZombieDie(zombie.getId());
+                    }
 
                     bulletIterator.remove();
                     LevelController.removeBullet(bullet.getImageView());
 
                     break;
                 }
+            }
+        }
+
+        Iterator<Integer> idsIterator = deadZombieIds.iterator();
+        while (idsIterator.hasNext()) {
+            removeZombie(idsIterator.next());
+            idsIterator.remove();
+        }
+
+    }
+
+    private void removeZombie(int id) {
+        for (Zombie zombie : zombies) {
+            if (zombie.getId() == id) {
+                zombies.remove(zombie);
+                LevelController.removeZombie(zombie);
+                break;
             }
         }
     }
@@ -64,10 +90,14 @@ public class World {
         zombies.add(zombie);
     }
 
-    public void moveZombies() {
+    public void moveZombies(Player player, Teammate teammate) {
         for (Zombie zombie : zombies) {
-            zombie.move(this);
+            zombie.move(player, teammate);
         }
+    }
+
+    public void addDeadZombieId(int id) {
+        deadZombieIds.add(id);
     }
 
     public static double getZombieStartPositionX() {

@@ -34,7 +34,6 @@ public class Server {
             lobby = new Lobby(this, client1, client2, 1);
 
 
-
             lobby.startGame();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -46,9 +45,11 @@ public class Server {
         if (message.getType() == Message.MOVE || message.getType() == Message.SHOT) {
             connection.getLobby().forwardMessage(message, connection);
         } else if (message.getType() == Message.ZOMBIE_DIE) {
-            int id = ByteBuffer.allocate(4).put(message.getData()).getInt();
+            int id = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();
 
-            connection.getLobby().getLevel().deleteZombie(id);
+            if (connection.getLobby().getLevel().deleteZombie(id)) {
+                lobby.forwardMessage(message, connection);
+            }
         }
     }
 

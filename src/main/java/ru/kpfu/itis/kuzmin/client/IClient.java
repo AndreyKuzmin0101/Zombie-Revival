@@ -13,4 +13,6 @@ public interface IClient {
     void finishGame();
     void sendNewPosition(float positionX, float positionY);
     void sendShot(float vectorX, float vectorY);
+
+    void sendZombieDie(int id);
 }

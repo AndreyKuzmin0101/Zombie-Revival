@@ -4,6 +4,10 @@ package ru.kpfu.itis.kuzmin.model.zombie;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.AppClient;
+import ru.kpfu.itis.kuzmin.Game;
+import ru.kpfu.itis.kuzmin.contoller.LevelController;
+import ru.kpfu.itis.kuzmin.model.Player;
+import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
 
 public abstract class Zombie {
@@ -13,7 +17,9 @@ public abstract class Zombie {
     private int damage;
     private float speed;
     private ImageView image;
-    private ProgressBar hp;
+    private ProgressBar hpProgressBar;
+    private double startHp;
+    private double hp;
 
     public Zombie(int id, int type, int hp, int damage, float speed, double positionX, double positionY) {
         this.id = id;
@@ -21,14 +27,20 @@ public abstract class Zombie {
         this.damage = damage;
         this.speed = speed;
 
-        this.image = new ImageView("images/shambling_citizen.png");
+        this.image = new ImageView("/images/shambling_citizen.png");
         image.setFitWidth(53);
         image.setFitHeight(70);
 
-        this.hp = new ProgressBar(hp);
+        this.hp = hp;
+        startHp = hp;
+        hpProgressBar = new ProgressBar(1);
+        hpProgressBar.setPrefWidth(53);
+        hpProgressBar.setPrefHeight(15);
+        LevelController.addHpBar(hpProgressBar);
 
         setPositionX(positionX);
         setPositionY(positionY);
+
     }
 
     public double getPositionX() {
@@ -37,7 +49,7 @@ public abstract class Zombie {
 
     public void setPositionX(double positionX) {
         image.setLayoutX(positionX);
-        hp.setLayoutX(positionX);
+        hpProgressBar.setLayoutX(positionX);
     }
 
     public double getPositionY() {
@@ -46,11 +58,32 @@ public abstract class Zombie {
 
     public void setPositionY(double positionY) {
         image.setLayoutY(positionY);
-        hp.setLayoutY(positionY-20);
+        hpProgressBar.setLayoutY(positionY-20);
     }
 
-    public void move(World world) {
-//        НУЖНО РЕАЛИЗОВАТЬ
+    public void move(Player player, Teammate teammate) {
+        double dx1 = player.getPositionX() - getPositionX();
+        double dy1 = player.getPositionY() - getPositionY();
+
+        double playerDistance = Math.sqrt(dx1*dx1 + dy1*dy1);
+
+        double dx2 = teammate.getPositionX() - getPositionX();
+        double dy2 = teammate.getPositionY() - getPositionY();
+
+        double teammateDistance = Math.sqrt(dx2*dx2 + dy2*dy2);
+
+        double vectorX, vectorY;
+        if (playerDistance < teammateDistance) {
+            vectorX = dx1/playerDistance;
+            vectorY = dy1/playerDistance;
+        } else {
+            vectorX = dx2/teammateDistance;
+            vectorY = dy2/teammateDistance;
+        }
+
+        setPositionX(getPositionX() + vectorX * speed);
+        setPositionY(getPositionY() + vectorY * speed);
+
     }
 
     public ImageView getImage() {
@@ -78,11 +111,12 @@ public abstract class Zombie {
     }
 
     public double getHp() {
-        return hp.getProgress();
+        return hp;
     }
 
     public void setHp(double hp) {
-        this.hp.setProgress(hp);
+        this.hp = hp;
+        this.hpProgressBar.setProgress(hp/this.startHp);
     }
 
     public int getDamage() {
@@ -101,5 +135,7 @@ public abstract class Zombie {
         this.speed = speed;
     }
 
-
+    public ProgressBar getHpProgressBar() {
+        return hpProgressBar;
+    }
 }

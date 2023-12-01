@@ -26,9 +26,9 @@ public class Lobby implements Runnable{
         this.thread.start();
     }
 
+    //TODO: фабрика уровней
     @Override
     public void run() {
-        //TODO: фабрика уровней
         level = new Level(this);
         level.startGame();
     }

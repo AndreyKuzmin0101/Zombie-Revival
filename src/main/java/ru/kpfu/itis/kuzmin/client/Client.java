@@ -6,21 +6,18 @@ import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
-import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.role.Engineer;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.role.Shooter;
+import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 import ru.kpfu.itis.kuzmin.protocol.Message;
 import ru.kpfu.itis.kuzmin.util.ZombieFactory;
 import ru.kpfu.itis.kuzmin.view.LevelView;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 
 public class Client implements IClient{
@@ -68,7 +65,7 @@ public class Client implements IClient{
         else teammateRole = new Shooter();
 
         Player player = new Player(this, role, role.getDefaultWeapon());
-        World world = new World();
+        World world = new World(this);
         Teammate teammate = new Teammate(teammateRole, teammateRole.getDefaultWeapon());
 
         this.game = new Game(1, world, player, teammate);
@@ -119,7 +116,15 @@ public class Client implements IClient{
             float positionY = byteBuffer.getFloat();
 
             ZombieFactory zombieFactory = new ZombieFactory();
-            game.getWorld().addZombie(zombieFactory.createZombie(id, type, positionX, positionY));
+            Zombie zombie = zombieFactory.createZombie(id, type, positionX, positionY);
+
+            game.getWorld().addZombie(zombie);
+
+            LevelController.addZombie(zombie.getImage());
+        } else if (message.getType() == Message.ZOMBIE_DIE) {
+            int id = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();
+
+            this.game.getWorld().addDeadZombieId(id);
         }
     }
 
@@ -146,6 +151,15 @@ public class Client implements IClient{
         sendMessage(Message.createMessage(type, data));
     }
 
+    @Override
+    public void sendZombieDie(int id) {
+        byte type = Message.ZOMBIE_DIE;
+
+        byte[] data = ByteBuffer.allocate(4).putInt(id).array();
+
+        sendMessage(Message.createMessage(type, data));
+    }
+
     private void sendMessage(Message message) {
         try {
             thread.getOutput().write(Message.getBytes(message));
@@ -153,7 +167,6 @@ public class Client implements IClient{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }

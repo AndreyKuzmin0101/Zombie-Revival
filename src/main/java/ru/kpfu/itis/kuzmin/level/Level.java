@@ -27,7 +27,7 @@ public class Level {
         }
     }
 
-    public void deleteZombie(int id) {
+    public boolean deleteZombie(int id) {
         Iterator<ZombieModel>  iterator = zombies.iterator();
 
         while (iterator.hasNext()) {
@@ -36,10 +36,11 @@ public class Level {
                 iterator.remove();
                 if (zombies.size() == 0 && !spawner.isActive()) {
                     finishGame();
-                    break;
                 }
+                return true;
             }
         }
+        return false;
     }
 
     public void finishGame() {

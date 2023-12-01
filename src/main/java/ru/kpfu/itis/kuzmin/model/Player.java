@@ -42,6 +42,7 @@ public class Player {
             bulletView.setLayoutY(getPositionY() + 54);
 
 
+
             double dx = mouseX - bulletView.getLayoutX();
             double dy = mouseY - bulletView.getLayoutY();
 

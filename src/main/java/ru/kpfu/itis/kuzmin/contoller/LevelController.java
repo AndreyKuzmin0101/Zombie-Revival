@@ -12,8 +12,7 @@ import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
 import ru.kpfu.itis.kuzmin.model.role.Role;
-
-import java.io.IOException;
+import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 
 
 public class LevelController {
@@ -45,6 +44,7 @@ public class LevelController {
             teammate.getRole().setImage(shooter);
             teammate.setHpProgressBar(shooterHp);
         }
+
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -68,9 +68,22 @@ public class LevelController {
         });
     }
 
-    public static void removeZombie(ImageView zombieView) {
+    public static void addZombie(ImageView zombieView) {
         Platform.runLater(() -> {
-            ((AnchorPane) scene.getRoot()).getChildren().remove(zombieView);
+            ((AnchorPane) scene.getRoot()).getChildren().add(zombieView);
+        });
+    }
+
+    public static void removeZombie(Zombie zombie) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().remove(zombie.getImage());
+            ((AnchorPane) scene.getRoot()).getChildren().remove(zombie.getHpProgressBar());
+        });
+    }
+
+    public static void addHpBar(ProgressBar hpBar) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().add(hpBar);
         });
     }
 }

@@ -5,7 +5,7 @@ import ru.kpfu.itis.kuzmin.model.gun.Uzi;
 public class Shooter extends Role {
     private int role;
     public Shooter() {
-        super(1, Role.SHOOTER);
+        super(0.5, Role.SHOOTER);
         setDefaultWeapon(new Uzi());
     }
 

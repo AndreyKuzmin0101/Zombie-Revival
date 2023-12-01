@@ -29,7 +29,7 @@ public class Game {
         world.moveBullets();
         world.deleteOldBullets();
         world.checkIntersectBulletsAndZombies();
-        world.moveZombies();
+        world.moveZombies(player, teammate);
     }
 
 
