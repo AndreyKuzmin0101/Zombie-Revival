@@ -7,11 +7,14 @@ import java.util.Arrays;
 
 // Message contents: [TYPE (1), DATA LENGTH(1), DATA(?)]
 public class Message {
+    public static final byte LOSE = -3;
+    public static final byte VICTORY = -2;
     public static final byte SPAWN_ZOMBIE = -1;
     public static final byte START_GAME = 1;
     public static final byte MOVE = 2;
     public static final byte SHOT = 3;
     public static final byte ZOMBIE_DIE = 4;
+    public static final byte PLAYER_DIE = 5;
 
     public static Message createMessage(byte messageType, byte[] data) {
         return new Message(messageType, data);

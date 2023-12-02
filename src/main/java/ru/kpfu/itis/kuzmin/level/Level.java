@@ -15,7 +15,7 @@ public class Level {
     public Level(Lobby lobby) {
         this.lobby = lobby;
         spawner = Spawner.getInstance(1);
-        zombies = new ArrayList<>(spawner.getZombies());
+        zombies = new ArrayList<>();
     }
 
     public void startGame() {
@@ -27,15 +27,20 @@ public class Level {
         }
     }
 
+    public void stopGame() {
+        spawner.setInActive();
+    }
+
     public boolean deleteZombie(int id) {
         Iterator<ZombieModel>  iterator = zombies.iterator();
-
         while (iterator.hasNext()) {
             ZombieModel zombie = iterator.next();
             if (zombie.getId() == id) {
                 iterator.remove();
+                System.out.println(zombies.size() + " " + spawner.isActive());
                 if (zombies.size() == 0 && !spawner.isActive()) {
-                    finishGame();
+
+                    lobby.stopGame(Message.VICTORY);
                 }
                 return true;
             }
@@ -43,12 +48,5 @@ public class Level {
         return false;
     }
 
-    public void finishGame() {
-        System.out.println("Живые победили!");
-    }
-
-    public void loseGame() {
-
-    }
 
 }

@@ -48,8 +48,10 @@ public class Server {
             int id = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();
 
             if (connection.getLobby().getLevel().deleteZombie(id)) {
-                lobby.forwardMessage(message, connection);
+                connection.getLobby().forwardMessage(message, connection);
             }
+        } else if (message.getType() == Message.PLAYER_DIE) {
+            connection.getLobby().stopGame(Message.LOSE);
         }
     }
 

@@ -22,22 +22,38 @@ public class Lobby implements Runnable{
         this.player1.setLobby(this);
         this.player2.setLobby(this);
 
-        this.thread = new Thread(this);
-        this.thread.start();
+
     }
 
     //TODO: фабрика уровней
     @Override
     public void run() {
+
         level = new Level(this);
         level.startGame();
     }
 
     public void startGame() {
+        this.thread = new Thread(this);
+
         Message message1 = Message.createMessage(Message.START_GAME, new byte[]{0});
         Message message2 = Message.createMessage(Message.START_GAME, new byte[]{1});
         player1.sendMessage(message1);
         player2.sendMessage(message2);
+
+        this.thread.start();
+    }
+
+    public void stopGame(byte reason) {
+        if (reason == Message.VICTORY) {
+            System.out.println("Живые победили!");
+        } else if (reason == Message.LOSE) {
+            System.out.println("Мёртвые победили!");
+            level.stopGame();
+        }
+
+        this.thread = null;
+        this.level = null;
     }
 
     public void forwardMessage(Message message, Connection connection) {
