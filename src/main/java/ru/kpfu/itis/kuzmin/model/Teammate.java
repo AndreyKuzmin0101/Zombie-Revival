@@ -8,14 +8,15 @@ import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 
 public class Teammate {
-    private ProgressBar hp;
-
+    private ProgressBar hpBar;
+    private double hp;
     private Weapon weapon;
     private Role role;
 
     public Teammate(Role role, Weapon weapon) {
         this.role = role;
         this.weapon = weapon;
+        this.hp = 100;
     }
 
     public void move(double positionX, double positionY) {
@@ -41,7 +42,7 @@ public class Teammate {
 
     public void setPositionX(double positionX) {
         role.getImage().setLayoutX(positionX);
-        hp.setLayoutX(positionX);
+        hpBar.setLayoutX(positionX);
     }
 
     public double getPositionY() {
@@ -50,19 +51,27 @@ public class Teammate {
 
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
-        hp.setLayoutY(positionY-20);
+        hpBar.setLayoutY(positionY-20);
     }
 
+
     public double getHp() {
-        return hp.getProgress();
+        return hp;
     }
 
     public void setHp(double hp) {
-        this.hp.setProgress(hp);
+        if (hp <= 0) {
+            this.hp = 0;
+            this.hpBar.setProgress(0);
+        } else {
+            this.hp = hp;
+            this.hpBar.setProgress(hp/100);
+        }
+
     }
 
     public void setHpProgressBar(ProgressBar progressBar) {
-        this.hp = progressBar;
+        this.hpBar = progressBar;
     }
 
     public Weapon getWeapon() {

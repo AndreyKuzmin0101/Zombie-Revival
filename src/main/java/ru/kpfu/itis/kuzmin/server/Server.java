@@ -42,6 +42,10 @@ public class Server {
     }
 
     public void handleMessage(Message message, Connection connection) {
+        if (lobby.getLevel() != null) handleGameMessage(message, connection);
+    }
+
+    private void handleGameMessage(Message message, Connection connection) {
         if (message.getType() == Message.MOVE || message.getType() == Message.SHOT) {
             connection.getLobby().forwardMessage(message, connection);
         } else if (message.getType() == Message.ZOMBIE_DIE) {

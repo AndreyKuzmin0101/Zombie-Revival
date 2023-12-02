@@ -74,15 +74,21 @@ public class Client implements IClient{
         appClient.setView(new LevelView(player));
 
     }
-
     @Override
-    public void finishGame() {
+    public void stopGame(byte result) {
+        if (result == Message.VICTORY) {
+            System.out.println("Победа");
+        } else if (result == Message.LOSE) {
+            System.out.println("Поражение");
+        }
+
         this.game = null;
     }
 
 
 
     public void handleMessage(Message message) throws IOException {
+
         if (message.getType() == Message.START_GAME) {
             byte[] data = message.getData();
             if(data[0] == 0) {
@@ -90,7 +96,13 @@ public class Client implements IClient{
             } else {
                 startGame(new Engineer());
             }
-        } else if (message.getType() == Message.MOVE) {
+        }
+
+        if (game != null) handleGameMessage(message);
+    }
+
+    private void handleGameMessage(Message message) {
+        if (message.getType() == Message.MOVE) {
             ByteBuffer byteBuffer = ByteBuffer.allocate(8).put(message.getData());
             byteBuffer.rewind();
 
@@ -125,6 +137,8 @@ public class Client implements IClient{
             int id = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();
 
             this.game.getWorld().addDeadZombieId(id);
+        } else if (message.getType() == Message.LOSE || message.getType() == Message.VICTORY) {
+            stopGame(message.getType());
         }
     }
 
@@ -160,6 +174,10 @@ public class Client implements IClient{
         sendMessage(Message.createMessage(type, data));
     }
 
+    public void sendPlayerDie() {
+        sendMessage(Message.createMessage(Message.PLAYER_DIE, new byte[0]));
+    }
+
     private void sendMessage(Message message) {
         try {
             thread.getOutput().write(Message.getBytes(message));
@@ -168,5 +186,6 @@ public class Client implements IClient{
             throw new RuntimeException(e);
         }
     }
+
 
 }

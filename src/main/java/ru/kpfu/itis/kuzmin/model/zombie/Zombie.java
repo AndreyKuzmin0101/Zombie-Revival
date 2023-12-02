@@ -3,12 +3,9 @@ package ru.kpfu.itis.kuzmin.model.zombie;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
-import ru.kpfu.itis.kuzmin.AppClient;
-import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
-import ru.kpfu.itis.kuzmin.model.World;
 
 public abstract class Zombie {
     public static final byte SHAMBLING_CITIZEN = 1;
@@ -20,12 +17,17 @@ public abstract class Zombie {
     private ProgressBar hpProgressBar;
     private double startHp;
     private double hp;
+    private int speedDamage;
+    private int intervalDamage;
 
-    public Zombie(int id, int type, int hp, int damage, float speed, double positionX, double positionY) {
+
+    public Zombie(int id, int type, int hp, int damage, float speed, int speedDamage, double positionX, double positionY) {
         this.id = id;
         this.type = type;
         this.damage = damage;
         this.speed = speed;
+        this.speedDamage = speedDamage;
+        this.intervalDamage = speedDamage;
 
         this.image = new ImageView("/images/shambling_citizen.png");
         image.setFitWidth(53);
@@ -41,6 +43,18 @@ public abstract class Zombie {
         setPositionX(positionX);
         setPositionY(positionY);
 
+    }
+
+    public int getIntervalDamage() {
+        return intervalDamage;
+    }
+
+    public void resetIntervalDamage() {
+        intervalDamage = speedDamage;
+    }
+
+    public void reduceIntervalDamage() {
+        intervalDamage -= 1;
     }
 
     public double getPositionX() {
@@ -60,6 +74,17 @@ public abstract class Zombie {
         image.setLayoutY(positionY);
         hpProgressBar.setLayoutY(positionY-20);
     }
+
+    public double damage(Player player, Teammate teammate) {
+        if (player.getRole().getImage().getBoundsInParent().intersects(getImage().getBoundsInParent())) {
+            player.setHp(player.getHp() - getDamage());
+        }
+        if (teammate.getRole().getImage().getBoundsInParent().intersects(getImage().getBoundsInParent())) {
+            teammate.setHp(teammate.getHp() - getDamage());
+        }
+        return player.getHp();
+    }
+
 
     public void move(Player player, Teammate teammate) {
         double dx1 = player.getPositionX() - getPositionX();
@@ -85,6 +110,7 @@ public abstract class Zombie {
         setPositionY(getPositionY() + vectorY * speed);
 
     }
+
 
     public ImageView getImage() {
         return image;

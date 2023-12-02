@@ -37,7 +37,6 @@ public class Level {
             ZombieModel zombie = iterator.next();
             if (zombie.getId() == id) {
                 iterator.remove();
-                System.out.println(zombies.size() + " " + spawner.isActive());
                 if (zombies.size() == 0 && !spawner.isActive()) {
 
                     lobby.stopGame(Message.VICTORY);

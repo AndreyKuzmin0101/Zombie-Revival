@@ -9,8 +9,8 @@ import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 
 public class Player {
-    private ProgressBar hp;
-
+    private ProgressBar hpBar;
+    private double hp;
     private boolean right;
     private boolean left;
     private boolean up;
@@ -29,6 +29,7 @@ public class Player {
         this.client = client;
         this.role = role;
         this.weapon = weapon;
+        this.hp = 100;
     }
 
     public void shoot(World world) {
@@ -88,7 +89,7 @@ public class Player {
 
     public void setPositionX(double positionX) {
         role.getImage().setLayoutX(positionX);
-        hp.setLayoutX(positionX);
+        hpBar.setLayoutX(positionX);
     }
 
     public double getPositionY() {
@@ -97,19 +98,26 @@ public class Player {
 
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
-        hp.setLayoutY(positionY-20);
-    }
-
-    public double getHp() {
-        return hp.getProgress();
+        hpBar.setLayoutY(positionY-20);
     }
 
     public void setHp(double hp) {
-        this.hp.setProgress(hp);
+        if (hp <= 0) {
+            this.hp = 0;
+            this.hpBar.setProgress(0);
+        } else {
+            this.hp = hp;
+            this.hpBar.setProgress(hp/100);
+        }
     }
 
+    public double getHp() {
+        return hp;
+    }
+
+
     public void setHpProgressBar(ProgressBar progressBar) {
-        this.hp = progressBar;
+        this.hpBar = progressBar;
     }
 
     public void setRight(boolean right) {

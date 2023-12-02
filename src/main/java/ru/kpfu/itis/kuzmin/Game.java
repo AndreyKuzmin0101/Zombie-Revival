@@ -30,6 +30,7 @@ public class Game {
         world.deleteOldBullets();
         world.checkIntersectBulletsAndZombies();
         world.moveZombies(player, teammate);
+        world.checkIntersectPlayersAndZombies(player, teammate);
     }
 
 

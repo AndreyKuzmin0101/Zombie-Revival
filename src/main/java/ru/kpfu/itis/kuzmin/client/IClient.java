@@ -10,7 +10,8 @@ public interface IClient {
     void connect();
     void start();
     void startGame(Role role) throws IOException;
-    void finishGame();
+    void stopGame(byte result);
+
     void sendNewPosition(float positionX, float positionY);
     void sendShot(float vectorX, float vectorY);
 

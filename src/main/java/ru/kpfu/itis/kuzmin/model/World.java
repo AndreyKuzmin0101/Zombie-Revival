@@ -73,6 +73,19 @@ public class World {
 
     }
 
+    public void checkIntersectPlayersAndZombies(Player player, Teammate teammate) {
+        for(Zombie zombie: zombies) {
+            zombie.reduceIntervalDamage();
+            if (zombie.getIntervalDamage() <= 0){
+                if (zombie.damage(player, teammate) <= 0) {
+                    client.sendPlayerDie();
+                }
+                zombie.resetIntervalDamage();
+            }
+
+        }
+    }
+
     private void removeZombie(int id) {
         for (Zombie zombie : zombies) {
             if (zombie.getId() == id) {

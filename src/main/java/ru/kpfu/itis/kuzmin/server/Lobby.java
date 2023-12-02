@@ -45,10 +45,12 @@ public class Lobby implements Runnable{
     }
 
     public void stopGame(byte reason) {
+        if (this.level == null) return;
+
         if (reason == Message.VICTORY) {
-            System.out.println("Живые победили!");
+            sendMessage(Message.createMessage(Message.VICTORY, new byte[0]));
         } else if (reason == Message.LOSE) {
-            System.out.println("Мёртвые победили!");
+            sendMessage(Message.createMessage(Message.LOSE, new byte[0]));
             level.stopGame();
         }
 
