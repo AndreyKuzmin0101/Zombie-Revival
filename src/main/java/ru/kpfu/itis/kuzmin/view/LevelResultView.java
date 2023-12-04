@@ -21,7 +21,7 @@ public class LevelResultView {
         }
 
         AnchorPane pane = loader.load();
-        pane.setLayoutX(450);
+        pane.setLayoutX(700);
         pane.setLayoutY(300);
 
         return pane;

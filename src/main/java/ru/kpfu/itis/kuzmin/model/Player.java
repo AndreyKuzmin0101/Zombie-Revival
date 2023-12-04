@@ -40,7 +40,7 @@ public class Player {
             bulletView.setFitHeight(11);
             bulletView.setFitWidth(11);
             bulletView.setLayoutX(getPositionX() + 28);
-            bulletView.setLayoutY(getPositionY() + 54);
+            bulletView.setLayoutY(getPositionY() + 45);
 
 
 
@@ -69,7 +69,7 @@ public class Player {
             setPositionX(getPositionX() - role.getSpeed());
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
-        if (right && getPositionX() < 1480) {
+        if (right && getPositionX() < 1867) {
             setPositionX(getPositionX() + role.getSpeed());
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
@@ -77,7 +77,7 @@ public class Player {
             setPositionY(getPositionY() - role.getSpeed());
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
-        if (down && getPositionY() < 750) {
+        if (down && getPositionY() < 950) {
             setPositionY(getPositionY() + role.getSpeed());
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }

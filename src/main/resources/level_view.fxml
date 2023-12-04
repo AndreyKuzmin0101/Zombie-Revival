@@ -7,22 +7,87 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.kuzmin.contoller.LevelController">
    <children>
-      <ImageView fitHeight="866.0" fitWidth="1609.0">
+      <ImageView fitHeight="1080.0" fitWidth="1920.0">
          <image>
             <Image url="@images/background_1_lvl.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="shooter" fitHeight="70.0" fitWidth="53.0" layoutX="722.0" layoutY="296.0">
+      <ImageView fitHeight="200.0" fitWidth="142.0" layoutX="42.0" layoutY="88.0">
+         <image>
+            <Image url="@images/tree1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="172.0" layoutX="1615.0" layoutY="73.0">
+         <image>
+            <Image url="@images/tree2.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="990.0" layoutY="595.0">
+         <image>
+            <Image url="@images/rock2.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="1175.0" layoutY="895.0">
+         <image>
+            <Image url="@images/grass1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="172.0" layoutX="651.0" layoutY="772.0">
+         <image>
+            <Image url="@images/tree2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="142.0" layoutX="1356.0" layoutY="506.0">
+         <image>
+            <Image url="@images/tree1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitWidth="86.0" layoutX="1085.0" layoutY="371.0" rotate="-33.1">
+         <image>
+            <Image url="@images/stump1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="111.0" fitWidth="157.0" layoutX="1509.0" layoutY="613.0">
+         <image>
+            <Image url="@images/foliage1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="70.0" fitWidth="76.0" layoutX="522.0" layoutY="482.0">
+         <image>
+            <Image url="@images/rock1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="shooter" fitHeight="70.0" fitWidth="53.0" layoutX="840.0" layoutY="296.0">
          <image>
             <Image url="@images/shooter.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="engineer" fitHeight="70.0" fitWidth="53.0" layoutX="823.0" layoutY="296.0">
+      <ImageView fx:id="engineer" fitHeight="70.0" fitWidth="53.0" layoutX="976.0" layoutY="296.0">
          <image>
             <Image url="@images/engineer.png" />
          </image>
       </ImageView>
-      <ProgressBar fx:id="shooterHp" layoutX="722.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
-      <ProgressBar fx:id="engineerHp" layoutX="823.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
+      <ProgressBar fx:id="shooterHp" layoutX="840.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
+      <ProgressBar fx:id="engineerHp" layoutX="976.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
+      <ImageView fitHeight="118.0" fitWidth="109.0" layoutX="344.0" layoutY="250.0">
+         <image>
+            <Image url="@images/foliage1.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="308.0" layoutY="678.0">
+         <image>
+            <Image url="@images/stump1.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="1461.0" layoutY="924.0">
+         <image>
+            <Image url="@images/rock2.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="682.0" layoutY="97.0">
+         <image>
+            <Image url="@images/grass1.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

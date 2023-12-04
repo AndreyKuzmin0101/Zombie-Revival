@@ -118,7 +118,7 @@ public class World {
         if (random.nextInt(2) == 0) {
             return random.nextDouble(-260, -60);
         } else {
-            return random.nextDouble(1545, 1745);
+            return random.nextDouble(1925, 2125);
         }
 
     }
@@ -127,7 +127,7 @@ public class World {
         if (random.nextInt(2) == 0) {
             return random.nextDouble(-280, -80);
         } else {
-            return random.nextDouble(830, 1030);
+            return random.nextDouble(1030, 1230);
         }
     }
 
