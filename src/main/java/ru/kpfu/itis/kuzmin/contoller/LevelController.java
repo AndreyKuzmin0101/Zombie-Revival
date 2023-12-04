@@ -28,6 +28,8 @@ public class LevelController {
 
     public static Scene scene;
 
+    public static AnimationTimer animationTimer;
+
     @FXML
     void initialize() {
         if (player.getRole().getRoleCode() == Role.SHOOTER) {
@@ -45,15 +47,22 @@ public class LevelController {
             teammate.setHpProgressBar(shooterHp);
         }
 
-        AnimationTimer animationTimer = new AnimationTimer() {
+        animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
                 game.prepareOneFrame();
             }
         };
+        startGameLogic();
+    }
+
+    public static void startGameLogic() {
         animationTimer.start();
     }
 
+    public static void stopGameLogic() {
+        animationTimer.stop();
+    }
 
     public static void addBullet(ImageView bulletView) {
         Platform.runLater(() -> {

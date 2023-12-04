@@ -3,6 +3,7 @@ package ru.kpfu.itis.kuzmin.client;
 import ru.kpfu.itis.kuzmin.AppClient;
 import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
+import ru.kpfu.itis.kuzmin.contoller.LevelResultController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
@@ -12,6 +13,7 @@ import ru.kpfu.itis.kuzmin.model.role.Shooter;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 import ru.kpfu.itis.kuzmin.protocol.Message;
 import ru.kpfu.itis.kuzmin.util.ZombieFactory;
+import ru.kpfu.itis.kuzmin.view.LevelResultView;
 import ru.kpfu.itis.kuzmin.view.LevelView;
 
 import java.io.*;
@@ -76,11 +78,8 @@ public class Client implements IClient{
     }
     @Override
     public void stopGame(byte result) {
-        if (result == Message.VICTORY) {
-            System.out.println("Победа");
-        } else if (result == Message.LOSE) {
-            System.out.println("Поражение");
-        }
+        LevelController.stopGameLogic();
+        LevelResultController.showResult(result, appClient.getView());
 
         this.game = null;
     }

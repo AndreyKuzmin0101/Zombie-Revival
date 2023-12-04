@@ -35,7 +35,7 @@ public class Spawner {
         Queue<Integer> intervals = new LinkedList<>();
         switch (lvl) {
             case 1:
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 1; i++) {
                     zombies.add(new ZombieModel(i, (byte) 1, (float) World.getZombieStartPositionX(), (float) World.getZombieStartPositionY()));
                     intervals.add(5000);
                 }

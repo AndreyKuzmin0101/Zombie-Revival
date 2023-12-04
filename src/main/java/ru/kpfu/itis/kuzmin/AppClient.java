@@ -42,4 +42,8 @@ public class AppClient extends Application {
             }
         });
     }
+
+    public Scene getView() {
+        return stage.getScene();
+    }
 }

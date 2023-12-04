@@ -16,7 +16,6 @@ public class LevelView implements View {
     public LevelView (Player player) {
         this.player = player;
     }
-
     public Scene getScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(AppClient.class.getResource("/level_view.fxml"));
         AnchorPane pane = loader.load();

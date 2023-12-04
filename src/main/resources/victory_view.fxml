@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.kuzmin.contoller.LevelResultController">
+   <children>
+      <Label layoutX="12.0" layoutY="109.0" text="Победа живых">
+         <font>
+            <Font name="MS Gothic" size="50.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.10000000149011612" green="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color green="0.7833333611488342" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Button layoutX="14.0" layoutY="303.0" mnemonicParsing="false" onAction="#restart" text="Начать заново">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="190.0" layoutY="303.0" mnemonicParsing="false" onAction="#next" text="Следующий уровень">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="501.0" layoutY="303.0" mnemonicParsing="false" onAction="#exit" text="Выйти">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

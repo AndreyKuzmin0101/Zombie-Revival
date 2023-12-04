@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.kpfu.itis.kuzmin.contoller.LevelResultController">
+   <children>
+      <Label layoutX="41.0" layoutY="103.0" text="Мертвецы победили">
+         <font>
+            <Font name="System Bold Italic" size="50.0" />
+         </font>
+         <textFill>
+            <RadialGradient centerX="0.48672569747519706" centerY="0.4810606060606061" focusDistance="0.5275229357798163" radius="0.802752311076593">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+      <Button layoutX="41.0" layoutY="277.0" mnemonicParsing="false" onAction="#restart" text="Начать заново">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Button layoutX="453.0" layoutY="277.0" mnemonicParsing="false" onAction="#exit" text="Выйти">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
