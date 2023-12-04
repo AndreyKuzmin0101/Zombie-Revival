@@ -79,7 +79,7 @@ public class Client implements IClient{
     @Override
     public void stopGame(byte result) {
         LevelController.stopGameLogic();
-        LevelResultController.showResult(result, appClient.getView());
+        LevelResultController.showResult(result, appClient. getView());
 
         this.game = null;
     }

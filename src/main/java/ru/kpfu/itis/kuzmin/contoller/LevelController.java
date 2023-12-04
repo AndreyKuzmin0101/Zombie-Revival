@@ -57,11 +57,16 @@ public class LevelController {
     }
 
     public static void startGameLogic() {
-        animationTimer.start();
+        Platform.runLater(() -> {
+            animationTimer.start();
+        });
+
     }
 
     public static void stopGameLogic() {
-        animationTimer.stop();
+        Platform.runLater(() -> {
+            animationTimer.stop();
+        });
     }
 
     public static void addBullet(ImageView bulletView) {

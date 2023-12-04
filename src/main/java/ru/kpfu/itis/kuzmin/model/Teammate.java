@@ -1,5 +1,6 @@
 package ru.kpfu.itis.kuzmin.model;
 
+import javafx.application.Platform;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
@@ -41,8 +42,11 @@ public class Teammate {
     }
 
     public void setPositionX(double positionX) {
-        role.getImage().setLayoutX(positionX);
-        hpBar.setLayoutX(positionX);
+        Platform.runLater(() -> {
+            role.getImage().setLayoutX(positionX);
+            hpBar.setLayoutX(positionX);
+        });
+
     }
 
     public double getPositionY() {
@@ -50,8 +54,11 @@ public class Teammate {
     }
 
     public void setPositionY(double positionY) {
-        role.getImage().setLayoutY(positionY);
-        hpBar.setLayoutY(positionY-20);
+        Platform.runLater(() -> {
+            role.getImage().setLayoutY(positionY);
+            hpBar.setLayoutY(positionY-20);
+        });
+
     }
 
 
