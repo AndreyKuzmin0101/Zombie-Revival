@@ -17,11 +17,11 @@ public abstract class Zombie {
     private ProgressBar hpProgressBar;
     private double startHp;
     private double hp;
-    private int speedDamage;
-    private int intervalDamage;
+    private double speedDamage;
+    private double intervalDamage;
 
 
-    public Zombie(int id, int type, int hp, int damage, float speed, int speedDamage, double positionX, double positionY) {
+    public Zombie(int id, int type, int hp, int damage, float speed, double speedDamage, double positionX, double positionY) {
         this.id = id;
         this.type = type;
         this.damage = damage;
@@ -45,7 +45,7 @@ public abstract class Zombie {
 
     }
 
-    public int getIntervalDamage() {
+    public double getIntervalDamage() {
         return intervalDamage;
     }
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 public class AppClient extends Application {
-    private static final String HOST = "26.205.25.135";
+    private static final String HOST = "127.0.0.1";
     private static final int PORT = 5555;
 
     public static void main(String[] args) {

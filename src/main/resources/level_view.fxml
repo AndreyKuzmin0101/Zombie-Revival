@@ -27,9 +27,24 @@
             <Image url="@images/rock2.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="118.0" fitWidth="109.0" layoutX="344.0" layoutY="250.0">
+         <image>
+            <Image url="@images/foliage1.png" />
+         </image>
+      </ImageView>
       <ImageView layoutX="1175.0" layoutY="895.0">
          <image>
             <Image url="@images/grass1.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="682.0" layoutY="97.0">
+         <image>
+            <Image url="@images/grass1.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="1461.0" layoutY="924.0">
+         <image>
+            <Image url="@images/rock2.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="200.0" fitWidth="172.0" layoutX="651.0" layoutY="772.0">
@@ -43,6 +58,11 @@
          </image>
       </ImageView>
       <ImageView fitWidth="86.0" layoutX="1085.0" layoutY="371.0" rotate="-33.1">
+         <image>
+            <Image url="@images/stump1.png" />
+         </image>
+      </ImageView>
+      <ImageView layoutX="308.0" layoutY="678.0">
          <image>
             <Image url="@images/stump1.png" />
          </image>
@@ -69,25 +89,5 @@
       </ImageView>
       <ProgressBar fx:id="shooterHp" layoutX="840.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
       <ProgressBar fx:id="engineerHp" layoutX="976.0" layoutY="273.0" prefHeight="15.0" prefWidth="53.0" progress="1.0" />
-      <ImageView fitHeight="118.0" fitWidth="109.0" layoutX="344.0" layoutY="250.0">
-         <image>
-            <Image url="@images/foliage1.png" />
-         </image>
-      </ImageView>
-      <ImageView layoutX="308.0" layoutY="678.0">
-         <image>
-            <Image url="@images/stump1.png" />
-         </image>
-      </ImageView>
-      <ImageView layoutX="1461.0" layoutY="924.0">
-         <image>
-            <Image url="@images/rock2.png" />
-         </image>
-      </ImageView>
-      <ImageView layoutX="682.0" layoutY="97.0">
-         <image>
-            <Image url="@images/grass1.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>
