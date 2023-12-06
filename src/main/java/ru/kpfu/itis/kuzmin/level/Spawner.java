@@ -15,6 +15,7 @@ public class Spawner {
         this.intervals = intervals;
         active = true;
     }
+
     public ZombieModel getZombie() {
         if (zombies.size() == 0 || !active) {
             active = false;
@@ -49,7 +50,10 @@ public class Spawner {
         return active;
     }
 
-    public void setInActive() { this.active = false; }
+    public void setInActive() {
+        this.active = false;
+    }
+
     public Queue<ZombieModel> getZombies() {
         return zombies;
     }

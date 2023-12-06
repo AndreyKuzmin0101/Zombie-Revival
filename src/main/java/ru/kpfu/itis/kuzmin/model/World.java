@@ -17,15 +17,15 @@ public class World {
         this.client = client;
     }
 
-    public void moveBullets() {
+    public void moveBullets(double elapsedTime) {
 
         Iterator<Bullet> iterator = bullets.iterator();
         while (iterator.hasNext()) {
             Bullet bullet = iterator.next();
             bullet.reduceLifeTime();
 
-            bullet.getImageView().setX(bullet.getImageView().getX() + bullet.getVelocity() * bullet.getVectorX());
-            bullet.getImageView().setY(bullet.getImageView().getY() + bullet.getVelocity() * bullet.getVectorY());
+            bullet.getImageView().setX(bullet.getImageView().getX() + bullet.getVelocity() * elapsedTime * bullet.getVectorX());
+            bullet.getImageView().setY(bullet.getImageView().getY() + bullet.getVelocity() * elapsedTime * bullet.getVectorY());
         }
     }
 
@@ -73,9 +73,9 @@ public class World {
 
     }
 
-    public void checkIntersectPlayersAndZombies(Player player, Teammate teammate) {
+    public void checkIntersectPlayersAndZombies(Player player, Teammate teammate, double elapsedTime) {
         for(Zombie zombie: zombies) {
-            zombie.reduceIntervalDamage();
+            zombie.reduceIntervalDamage(elapsedTime);
             if (zombie.getIntervalDamage() <= 0){
                 if (zombie.damage(player, teammate) <= 0) {
                     client.sendPlayerDie();
@@ -103,9 +103,9 @@ public class World {
         zombies.add(zombie);
     }
 
-    public void moveZombies(Player player, Teammate teammate) {
+    public void moveZombies(Player player, Teammate teammate, double elapsedTime) {
         for (Zombie zombie : zombies) {
-            zombie.move(player, teammate);
+            zombie.move(player, teammate, elapsedTime);
         }
     }
 

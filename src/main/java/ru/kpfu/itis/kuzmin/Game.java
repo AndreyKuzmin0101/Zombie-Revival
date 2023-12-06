@@ -6,6 +6,7 @@ import ru.kpfu.itis.kuzmin.model.World;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 
 public class Game {
+    private long lastTime = System.nanoTime();
     private int lvl;
     private World world;
     private Player player;
@@ -17,22 +18,25 @@ public class Game {
         this.player = player;
         this.teammate = teammate;
     }
+
     public void initController() {
         LevelController.player = this.player;
         LevelController.world = this.world;
         LevelController.teammate = this.teammate;
         LevelController.game = this;
     }
-    public void prepareOneFrame() {
-        player.move();
-        player.shoot(world);
-        world.moveBullets();
+
+    public void prepareOneFrame(long currentTime) {
+        double elapsedTime = (currentTime - lastTime) / 1e9;
+        player.move(elapsedTime);
+        player.shoot(world, elapsedTime);
+        world.moveBullets(elapsedTime);
         world.deleteOldBullets();
         world.checkIntersectBulletsAndZombies();
-        world.moveZombies(player, teammate);
-        world.checkIntersectPlayersAndZombies(player, teammate);
+        world.moveZombies(player, teammate, elapsedTime);
+        world.checkIntersectPlayersAndZombies(player, teammate, elapsedTime);
+        lastTime = currentTime;
     }
-
 
 
     public World getWorld() {

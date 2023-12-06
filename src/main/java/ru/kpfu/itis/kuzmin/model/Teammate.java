@@ -37,6 +37,7 @@ public class Teammate {
         LevelController.addBullet(bulletView);
         world.addBullet(bullet);
     }
+
     public double getPositionX() {
         return role.getImage().getLayoutX();
     }
@@ -56,7 +57,7 @@ public class Teammate {
     public void setPositionY(double positionY) {
         Platform.runLater(() -> {
             role.getImage().setLayoutY(positionY);
-            hpBar.setLayoutY(positionY-20);
+            hpBar.setLayoutY(positionY - 20);
         });
 
     }
@@ -72,7 +73,7 @@ public class Teammate {
             this.hpBar.setProgress(0);
         } else {
             this.hp = hp;
-            this.hpBar.setProgress(hp/100);
+            this.hpBar.setProgress(hp / 100);
         }
 
     }

@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 
-public  interface View {
+public interface View {
 
     Scene getScene() throws IOException;
 }

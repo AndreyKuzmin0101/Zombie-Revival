@@ -13,16 +13,17 @@ import ru.kpfu.itis.kuzmin.model.role.Shooter;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 import ru.kpfu.itis.kuzmin.protocol.Message;
 import ru.kpfu.itis.kuzmin.util.ZombieFactory;
-import ru.kpfu.itis.kuzmin.view.LevelResultView;
 import ru.kpfu.itis.kuzmin.view.LevelView;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
 
-public class Client implements IClient{
+public class Client implements IClient {
     private AppClient appClient;
     private Socket socket;
     private final InetAddress host;
@@ -35,6 +36,7 @@ public class Client implements IClient{
         this.port = port;
         this.appClient = appClient;
     }
+
     @Override
     public void start() {
         connect();
@@ -50,12 +52,12 @@ public class Client implements IClient{
         thread = new ClientThread(input, output, this);
         new Thread(thread).start();
     }
+
     @Override
     public void connect() {
-        try{
+        try {
             socket = new Socket(host, port);
-        }
-        catch(IOException ex){
+        } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -76,21 +78,21 @@ public class Client implements IClient{
         appClient.setView(new LevelView(player));
 
     }
+
     @Override
     public void stopGame(byte result) {
         LevelController.stopGameLogic();
-        LevelResultController.showResult(result, appClient. getView());
+        LevelResultController.showResult(result, appClient.getView());
 
         this.game = null;
     }
-
 
 
     public void handleMessage(Message message) throws IOException {
 
         if (message.getType() == Message.START_GAME) {
             byte[] data = message.getData();
-            if(data[0] == 0) {
+            if (data[0] == 0) {
                 startGame(new Shooter());
             } else {
                 startGame(new Engineer());
@@ -118,7 +120,7 @@ public class Client implements IClient{
 
             game.getTeammate().shoot(game.getWorld(), vectorX, vectorY);
         } else if (message.getType() == Message.SPAWN_ZOMBIE) {
-            ByteBuffer byteBuffer = ByteBuffer.allocate(4+1+8).put(message.getData());
+            ByteBuffer byteBuffer = ByteBuffer.allocate(4 + 1 + 8).put(message.getData());
             byteBuffer.rewind();
 
             int id = byteBuffer.getInt();
@@ -153,7 +155,7 @@ public class Client implements IClient{
         sendMessage(Message.createMessage(type, data));
     }
 
-   @Override
+    @Override
     public void sendShot(float vectorX, float vectorY) {
         byte type = Message.SHOT;
 

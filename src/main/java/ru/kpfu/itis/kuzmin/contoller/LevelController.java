@@ -50,7 +50,7 @@ public class LevelController {
         animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                game.prepareOneFrame();
+                game.prepareOneFrame(l);
             }
         };
         startGameLogic();

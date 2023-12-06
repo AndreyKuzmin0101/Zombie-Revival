@@ -6,7 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 
-public class ClientThread implements Runnable{
+public class ClientThread implements Runnable {
 
     private BufferedInputStream input;
     private BufferedOutputStream output;

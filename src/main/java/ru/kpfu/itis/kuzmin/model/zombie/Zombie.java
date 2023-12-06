@@ -53,8 +53,8 @@ public abstract class Zombie {
         intervalDamage = speedDamage;
     }
 
-    public void reduceIntervalDamage() {
-        intervalDamage -= 1;
+    public void reduceIntervalDamage(double elapsedTime) {
+        intervalDamage -= elapsedTime;
     }
 
     public double getPositionX() {
@@ -86,7 +86,7 @@ public abstract class Zombie {
     }
 
 
-    public void move(Player player, Teammate teammate) {
+    public void move(Player player, Teammate teammate, double elapsedTime) {
         double dx1 = player.getPositionX() - getPositionX();
         double dy1 = player.getPositionY() - getPositionY();
 
@@ -106,8 +106,8 @@ public abstract class Zombie {
             vectorY = dy2/teammateDistance;
         }
 
-        setPositionX(getPositionX() + vectorX * speed);
-        setPositionY(getPositionY() + vectorY * speed);
+        setPositionX(getPositionX() + vectorX * speed * elapsedTime);
+        setPositionY(getPositionY() + vectorY * speed * elapsedTime);
 
     }
 

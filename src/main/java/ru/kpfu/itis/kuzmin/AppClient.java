@@ -3,7 +3,6 @@ package ru.kpfu.itis.kuzmin;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.view.View;
@@ -14,9 +13,11 @@ import java.net.InetAddress;
 public class AppClient extends Application {
     private static final String HOST = "26.205.25.135";
     private static final int PORT = 5555;
+
     public static void main(String[] args) {
         launch();
     }
+
     private Stage stage;
 
     @Override

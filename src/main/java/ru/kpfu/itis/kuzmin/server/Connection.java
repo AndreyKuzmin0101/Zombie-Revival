@@ -2,11 +2,12 @@ package ru.kpfu.itis.kuzmin.server;
 
 import ru.kpfu.itis.kuzmin.protocol.Message;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
-public class Connection implements Runnable{
+public class Connection implements Runnable {
 
     private Socket socket;
     private Thread thread;
@@ -37,8 +38,8 @@ public class Connection implements Runnable{
     public void run() {
         try {
             while (true) {
-                 Message message = Message.readMessage(input);
-                 server.handleMessage(message, this);
+                Message message = Message.readMessage(input);
+                server.handleMessage(message, this);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

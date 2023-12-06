@@ -10,6 +10,7 @@ public class Bullet {
     private int lifetime;
     private boolean inactive;
     private ImageView imageView;
+
     public Bullet(double damage, int velocity, double vectorX, double vectorY, ImageView imageView) {
         this.damage = damage;
         this.velocity = velocity;
@@ -60,6 +61,11 @@ public class Bullet {
         this.imageView = imageView;
     }
 
-    public void reduceLifeTime() { lifetime -= 1; }
-    public int getLifetime() { return lifetime; }
+    public void reduceLifeTime() {
+        lifetime -= 1;
+    }
+
+    public int getLifetime() {
+        return lifetime;
+    }
 }

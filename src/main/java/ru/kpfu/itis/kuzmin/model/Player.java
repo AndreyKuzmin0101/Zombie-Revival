@@ -32,8 +32,8 @@ public class Player {
         this.hp = 100;
     }
 
-    public void shoot(World world) {
-        weapon.reduceInterval();
+    public void shoot(World world, double elapsedTime) {
+        weapon.reduceInterval(elapsedTime);
 
         if (shoot && weapon.getInterval() <= 0) {
             ImageView bulletView = new ImageView("/images/bullet.png");
@@ -43,13 +43,12 @@ public class Player {
             bulletView.setLayoutY(getPositionY() + 45);
 
 
-
             double dx = mouseX - bulletView.getLayoutX();
             double dy = mouseY - bulletView.getLayoutY();
 
-            double sqrt = Math.sqrt(dx*dx + dy*dy);
-            double vectorX = dx/sqrt;
-            double vectorY = dy/sqrt;
+            double sqrt = Math.sqrt(dx * dx + dy * dy);
+            double vectorX = dx / sqrt;
+            double vectorY = dy / sqrt;
 
             client.sendShot((float) vectorX, (float) vectorY);
 
@@ -64,21 +63,22 @@ public class Player {
 
         }
     }
-    public void move() {
+
+    public void move(double elapsedTime) {
         if (left && getPositionX() > 0) {
-            setPositionX(getPositionX() - role.getSpeed());
+            setPositionX(getPositionX() - role.getSpeed()*elapsedTime);
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (right && getPositionX() < 1867) {
-            setPositionX(getPositionX() + role.getSpeed());
+            setPositionX(getPositionX() + role.getSpeed()*elapsedTime);
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (up && getPositionY() > 0) {
-            setPositionY(getPositionY() - role.getSpeed());
+            setPositionY(getPositionY() - role.getSpeed()*elapsedTime);
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (down && getPositionY() < 950) {
-            setPositionY(getPositionY() + role.getSpeed());
+            setPositionY(getPositionY() + role.getSpeed()*elapsedTime);
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
     }
@@ -98,7 +98,7 @@ public class Player {
 
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
-        hpBar.setLayoutY(positionY-20);
+        hpBar.setLayoutY(positionY - 20);
     }
 
     public void setHp(double hp) {
@@ -107,7 +107,7 @@ public class Player {
             this.hpBar.setProgress(0);
         } else {
             this.hp = hp;
-            this.hpBar.setProgress(hp/100);
+            this.hpBar.setProgress(hp / 100);
         }
     }
 

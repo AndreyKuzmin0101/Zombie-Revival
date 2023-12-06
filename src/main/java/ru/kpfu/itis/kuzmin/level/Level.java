@@ -12,6 +12,7 @@ public class Level {
     private Lobby lobby;
     private Spawner spawner;
     private List<ZombieModel> zombies;
+
     public Level(Lobby lobby) {
         this.lobby = lobby;
         spawner = Spawner.getInstance(1);
@@ -20,7 +21,7 @@ public class Level {
 
     public void startGame() {
         ZombieModel zombie;
-        while ( (zombie = spawner.getZombie()) != null) {
+        while ((zombie = spawner.getZombie()) != null) {
             zombies.add(zombie);
 
             lobby.sendMessage(Message.createMessage(Message.SPAWN_ZOMBIE, zombie.getData()));
@@ -32,7 +33,7 @@ public class Level {
     }
 
     public boolean deleteZombie(int id) {
-        Iterator<ZombieModel>  iterator = zombies.iterator();
+        Iterator<ZombieModel> iterator = zombies.iterator();
         while (iterator.hasNext()) {
             ZombieModel zombie = iterator.next();
             if (zombie.getId() == id) {

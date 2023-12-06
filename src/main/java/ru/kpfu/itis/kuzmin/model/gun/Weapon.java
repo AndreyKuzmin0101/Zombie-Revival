@@ -21,8 +21,8 @@ public class Weapon {
         this.damage = damage;
     }
 
-    public void reduceInterval() {
-        interval -= 1;
+    public void reduceInterval(double elapsedTime) {
+        interval -= elapsedTime;
     }
     public void resumeInterval() {
         interval = rateOfFire;
