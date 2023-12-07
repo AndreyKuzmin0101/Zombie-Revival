@@ -4,11 +4,16 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
+import ru.kpfu.itis.kuzmin.model.defense.Wall;
 import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 
+import java.util.List;
+
 public class Player {
+    public static final int SHOOT = 1;
+    public static final int BUILD_WALL = 2;
     private ProgressBar hpBar;
     private double hp;
     private boolean right;
@@ -16,26 +21,26 @@ public class Player {
     private boolean up;
     private boolean down;
     private boolean shoot;
-
-
     private double mouseX;
     private double mouseY;
 
     private Client client;
     private Weapon weapon;
     private Role role;
+    private int mode;
 
     public Player(Client client, Role role, Weapon weapon) {
         this.client = client;
         this.role = role;
         this.weapon = weapon;
         this.hp = 100;
+        this.mode = SHOOT;
     }
 
     public void shoot(World world, double elapsedTime) {
         weapon.reduceInterval(elapsedTime);
 
-        if (shoot && weapon.getInterval() <= 0) {
+        if (mode == SHOOT && shoot && weapon.getInterval() <= 0) {
             ImageView bulletView = new ImageView("/images/bullet.png");
             bulletView.setFitHeight(11);
             bulletView.setFitWidth(11);
@@ -64,23 +69,67 @@ public class Player {
         }
     }
 
-    public void move(double elapsedTime) {
+    public void move(World world, double elapsedTime) {
+        List<Wall> walls = world.getWalls();
+
         if (left && getPositionX() > 0) {
-            setPositionX(getPositionX() - role.getSpeed()*elapsedTime);
+            double oldPositionX = getPositionX();
+            setPositionX(getPositionX() - role.getSpeed() * elapsedTime);
+
+            for (Wall wall : walls) {
+                if (getRole().getImage().getBoundsInParent().intersects(wall.getImage().getBoundsInParent())) {
+                    setPositionX(oldPositionX);
+                    break;
+                }
+            }
+
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (right && getPositionX() < 1867) {
-            setPositionX(getPositionX() + role.getSpeed()*elapsedTime);
+            double oldPositionX = getPositionX();
+            setPositionX(getPositionX() + role.getSpeed() * elapsedTime);
+
+            for (Wall wall : walls) {
+                if (getRole().getImage().getBoundsInParent().intersects(wall.getImage().getBoundsInParent())) {
+                    setPositionX(oldPositionX);
+                    break;
+                }
+            }
+
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (up && getPositionY() > 0) {
-            setPositionY(getPositionY() - role.getSpeed()*elapsedTime);
+            double oldPositionY = getPositionY();
+            setPositionY(getPositionY() - role.getSpeed() * elapsedTime);
+
+            for (Wall wall : walls) {
+                if (getRole().getImage().getBoundsInParent().intersects(wall.getImage().getBoundsInParent())) {
+                    setPositionY(oldPositionY);
+                    break;
+                }
+            }
+
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
         if (down && getPositionY() < 950) {
-            setPositionY(getPositionY() + role.getSpeed()*elapsedTime);
+            double oldPositionY = getPositionY();
+            setPositionY(getPositionY() + role.getSpeed() * elapsedTime);
+            for (Wall wall : walls) {
+                if (getRole().getImage().getBoundsInParent().intersects(wall.getImage().getBoundsInParent())) {
+                    setPositionY(oldPositionY);
+                    break;
+                }
+            }
+
             client.sendNewPosition((float) getPositionX(), (float) getPositionY());
         }
+
+
+    }
+
+    public void setWall(World world) {
+        world.addWall(mouseX, mouseY);
+        client.sendWall((float) mouseX, (float) mouseY);
     }
 
     public double getPositionX() {
@@ -109,6 +158,14 @@ public class Player {
             this.hp = hp;
             this.hpBar.setProgress(hp / 100);
         }
+    }
+
+    public void changeMode(int newMode) {
+        this.mode = newMode;
+    }
+
+    public int getMode() {
+        return mode;
     }
 
     public double getHp() {
@@ -163,5 +220,13 @@ public class Player {
 
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
+    }
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
     }
 }

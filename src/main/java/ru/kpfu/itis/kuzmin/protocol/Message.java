@@ -2,7 +2,6 @@ package ru.kpfu.itis.kuzmin.protocol;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 
 // Message contents: [TYPE (1), DATA LENGTH(1), DATA(?)]
@@ -15,6 +14,7 @@ public class Message {
     public static final byte SHOT = 3;
     public static final byte ZOMBIE_DIE = 4;
     public static final byte PLAYER_DIE = 5;
+    public static final byte CREATE_WALL = 6;
 
     public static Message createMessage(byte messageType, byte[] data) {
         return new Message(messageType, data);

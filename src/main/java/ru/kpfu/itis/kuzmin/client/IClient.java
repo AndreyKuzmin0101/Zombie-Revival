@@ -18,4 +18,8 @@ public interface IClient {
     void sendShot(float vectorX, float vectorY);
 
     void sendZombieDie(int id);
+
+    void sendPlayerDie();
+
+    void sendWall(float positionX, float positionY);
 }

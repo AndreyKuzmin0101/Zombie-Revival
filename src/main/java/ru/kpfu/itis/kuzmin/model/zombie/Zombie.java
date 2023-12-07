@@ -6,6 +6,8 @@ import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
+import ru.kpfu.itis.kuzmin.model.World;
+import ru.kpfu.itis.kuzmin.model.defense.Wall;
 
 public abstract class Zombie {
     public static final byte SHAMBLING_CITIZEN = 1;
@@ -78,15 +80,17 @@ public abstract class Zombie {
     public double damage(Player player, Teammate teammate) {
         if (player.getRole().getImage().getBoundsInParent().intersects(getImage().getBoundsInParent())) {
             player.setHp(player.getHp() - getDamage());
+            resetIntervalDamage();
         }
         if (teammate.getRole().getImage().getBoundsInParent().intersects(getImage().getBoundsInParent())) {
             teammate.setHp(teammate.getHp() - getDamage());
+            resetIntervalDamage();
         }
         return player.getHp();
     }
 
 
-    public void move(Player player, Teammate teammate, double elapsedTime) {
+    public void move(Player player, Teammate teammate, double elapsedTime, World world) {
         double dx1 = player.getPositionX() - getPositionX();
         double dy1 = player.getPositionY() - getPositionY();
 
@@ -106,11 +110,33 @@ public abstract class Zombie {
             vectorY = dy2/teammateDistance;
         }
 
+        double oldPositionX = getPositionX();
+        double oldPositionY = getPositionY();
+
         setPositionX(getPositionX() + vectorX * speed * elapsedTime);
         setPositionY(getPositionY() + vectorY * speed * elapsedTime);
 
+        for (Wall wall: world.getWalls()) {
+            if (image.getBoundsInParent().intersects(wall.getImage().getBoundsInParent())) {
+                setPositionX(oldPositionX);
+                setPositionY(oldPositionY);
+                damageWall(wall, world);
+
+                break;
+            }
+        }
     }
 
+    private void damageWall(Wall wall, World world) {
+        if (getIntervalDamage() <= 0) {
+            wall.setHp(wall.getHp() - damage);
+            resetIntervalDamage();
+            if (wall.getHp() <= 0) {
+                world.deleteWall(wall);
+            }
+        }
+
+    }
 
     public ImageView getImage() {
         return image;

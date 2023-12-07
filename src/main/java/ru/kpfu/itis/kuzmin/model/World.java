@@ -2,17 +2,22 @@ package ru.kpfu.itis.kuzmin.model;
 
 import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
+import ru.kpfu.itis.kuzmin.model.defense.StoneWall;
+import ru.kpfu.itis.kuzmin.model.defense.Wall;
 import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 public class World {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Zombie> zombies = new ArrayList<>();
     private ArrayList<Integer> deadZombieIds = new ArrayList<>();
-    private Client client;
 
+    private ArrayList<Wall> walls = new ArrayList<>();
+    private Client client;
     public World(Client client) {
         this.client = client;
     }
@@ -80,7 +85,7 @@ public class World {
                 if (zombie.damage(player, teammate) <= 0) {
                     client.sendPlayerDie();
                 }
-                zombie.resetIntervalDamage();
+
             }
 
         }
@@ -105,12 +110,17 @@ public class World {
 
     public void moveZombies(Player player, Teammate teammate, double elapsedTime) {
         for (Zombie zombie : zombies) {
-            zombie.move(player, teammate, elapsedTime);
+            zombie.move(player, teammate, elapsedTime, this);
         }
     }
 
     public void addDeadZombieId(int id) {
         deadZombieIds.add(id);
+    }
+
+    public void addWall(double positionX, double positionY) {
+        Wall wall = new StoneWall(positionX, positionY);
+        walls.add(wall);
     }
 
     public static double getZombieStartPositionX() {
@@ -131,4 +141,16 @@ public class World {
         }
     }
 
+    public ArrayList<Wall> getWalls() {
+        return walls;
+    }
+
+    public void deleteWall(Wall wall) {
+        walls.remove(wall);
+        LevelController.removeWall(wall);
+    }
+
+    public ArrayList<Zombie> getZombies() {
+        return zombies;
+    }
 }

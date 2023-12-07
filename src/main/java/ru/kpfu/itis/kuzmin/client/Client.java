@@ -75,7 +75,7 @@ public class Client implements IClient {
         this.game = new Game(1, world, player, teammate);
         this.game.initController();
 
-        appClient.setView(new LevelView(player));
+        appClient.setView(new LevelView(player, game));
 
     }
 
@@ -140,6 +140,13 @@ public class Client implements IClient {
             this.game.getWorld().addDeadZombieId(id);
         } else if (message.getType() == Message.LOSE || message.getType() == Message.VICTORY) {
             stopGame(message.getType());
+        } else if (message.getType() == Message.CREATE_WALL) {
+            ByteBuffer byteBuffer = ByteBuffer.allocate(8).put(message.getData());
+            byteBuffer.rewind();
+            float positionX = byteBuffer.getFloat();
+            float positionY = byteBuffer.getFloat();
+
+            this.game.getWorld().addWall(positionX, positionY);
         }
     }
 
@@ -175,8 +182,19 @@ public class Client implements IClient {
         sendMessage(Message.createMessage(type, data));
     }
 
+    @Override
     public void sendPlayerDie() {
         sendMessage(Message.createMessage(Message.PLAYER_DIE, new byte[0]));
+    }
+
+    @Override
+    public void sendWall(float positionX, float positionY) {
+        byte[] data = ByteBuffer.allocate(8)
+                .putFloat(positionX)
+                .putFloat(positionY)
+                .array();
+
+        sendMessage(Message.createMessage(Message.CREATE_WALL, data));
     }
 
     private void sendMessage(Message message) {
@@ -187,6 +205,7 @@ public class Client implements IClient {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }

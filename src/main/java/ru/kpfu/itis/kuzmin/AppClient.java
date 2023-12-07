@@ -25,6 +25,8 @@ public class AppClient extends Application {
 
         this.stage = stage;
 
+        stage.setOnCloseRequest(e -> System.exit(0));
+
         Client client = new Client(InetAddress.getByName(HOST), PORT, this);
         client.start();
 

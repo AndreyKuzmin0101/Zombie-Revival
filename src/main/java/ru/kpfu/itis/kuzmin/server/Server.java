@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Server {
     private static final int PORT = 5555;
@@ -46,7 +43,7 @@ public class Server {
     }
 
     private void handleGameMessage(Message message, Connection connection) {
-        if (message.getType() == Message.MOVE || message.getType() == Message.SHOT) {
+        if (message.getType() == Message.MOVE || message.getType() == Message.SHOT || message.getType() == Message.CREATE_WALL) {
             connection.getLobby().forwardMessage(message, connection);
         } else if (message.getType() == Message.ZOMBIE_DIE) {
             int id = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();

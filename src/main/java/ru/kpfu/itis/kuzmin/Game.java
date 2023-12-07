@@ -4,6 +4,8 @@ import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.World;
 import ru.kpfu.itis.kuzmin.model.Teammate;
+import ru.kpfu.itis.kuzmin.model.role.Engineer;
+import ru.kpfu.itis.kuzmin.model.role.Role;
 
 public class Game {
     private long lastTime = System.nanoTime();
@@ -28,7 +30,10 @@ public class Game {
 
     public void prepareOneFrame(long currentTime) {
         double elapsedTime = (currentTime - lastTime) / 1e9;
-        player.move(elapsedTime);
+        if (player.getRole().getRoleCode() == Role.ENGINEER) {
+            ((Engineer) player.getRole()).reduceTimer(elapsedTime);
+        }
+        player.move(world, elapsedTime);
         player.shoot(world, elapsedTime);
         world.moveBullets(elapsedTime);
         world.deleteOldBullets();

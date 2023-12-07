@@ -11,6 +11,7 @@ import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
+import ru.kpfu.itis.kuzmin.model.defense.Wall;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 
@@ -29,6 +30,8 @@ public class LevelController {
     public static Scene scene;
 
     public static AnimationTimer animationTimer;
+
+
 
     @FXML
     void initialize() {
@@ -98,6 +101,19 @@ public class LevelController {
     public static void addHpBar(ProgressBar hpBar) {
         Platform.runLater(() -> {
             ((AnchorPane) scene.getRoot()).getChildren().add(hpBar);
+        });
+    }
+
+    public static void addWall(ImageView wall) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().add(wall);
+        });
+    }
+
+    public static void removeWall(Wall wall) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().remove(wall.getImage());
+            ((AnchorPane) scene.getRoot()).getChildren().remove(wall.getProgressBar());
         });
     }
 }
