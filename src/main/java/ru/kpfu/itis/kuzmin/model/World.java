@@ -2,7 +2,9 @@ package ru.kpfu.itis.kuzmin.model;
 
 import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
+import ru.kpfu.itis.kuzmin.model.defense.DefaultTurret;
 import ru.kpfu.itis.kuzmin.model.defense.StoneWall;
+import ru.kpfu.itis.kuzmin.model.defense.Turret;
 import ru.kpfu.itis.kuzmin.model.defense.Wall;
 import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
@@ -17,6 +19,7 @@ public class World {
     private ArrayList<Integer> deadZombieIds = new ArrayList<>();
 
     private ArrayList<Wall> walls = new ArrayList<>();
+    private ArrayList<Turret> turrets = new ArrayList<>();
     private Client client;
     public World(Client client) {
         this.client = client;
@@ -123,6 +126,17 @@ public class World {
         walls.add(wall);
     }
 
+    public void addTurret(double positionX, double positionY) {
+        Turret turret = new DefaultTurret(positionX, positionY);
+        turrets.add(turret);
+    }
+
+    public void shootTurrets(double elapsedTime) {
+        for (Turret turret : turrets) {
+            turret.shoot(this, elapsedTime);
+        }
+    }
+
     public static double getZombieStartPositionX() {
         Random random = new Random();
         if (random.nextInt(2) == 0) {
@@ -145,12 +159,24 @@ public class World {
         return walls;
     }
 
+    public ArrayList<Turret> getTurrets() {
+        return turrets;
+    }
+
     public void deleteWall(Wall wall) {
         walls.remove(wall);
         LevelController.removeWall(wall);
     }
 
+    public void deleteTurret(Turret turret) {
+        turrets.remove(turret);
+        LevelController.removeTurret(turret);
+    }
+
     public ArrayList<Zombie> getZombies() {
         return zombies;
     }
+
+
+
 }

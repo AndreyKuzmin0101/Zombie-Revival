@@ -7,6 +7,7 @@ import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
+import ru.kpfu.itis.kuzmin.model.defense.Turret;
 import ru.kpfu.itis.kuzmin.model.defense.Wall;
 
 public abstract class Zombie {
@@ -77,6 +78,14 @@ public abstract class Zombie {
         hpProgressBar.setLayoutY(positionY-20);
     }
 
+    public double getCenterX() {
+        return getPositionX() + 26.5;
+    }
+
+    public double getCenterY() {
+        return getPositionY() + 35;
+    }
+
     public double damage(Player player, Teammate teammate) {
         if (player.getRole().getImage().getBoundsInParent().intersects(getImage().getBoundsInParent())) {
             player.setHp(player.getHp() - getDamage());
@@ -89,25 +98,41 @@ public abstract class Zombie {
         return player.getHp();
     }
 
+    //TODO: продумать обход препятствий
 
     public void move(Player player, Teammate teammate, double elapsedTime, World world) {
-        double dx1 = player.getPositionX() - getPositionX();
-        double dy1 = player.getPositionY() - getPositionY();
+        double dx1 = player.getCenterX() - getCenterX();
+        double dy1 = player.getCenterY() - getCenterY();
+
+        double dx2 = teammate.getCenterX() - getCenterX();
+        double dy2 = teammate.getCenterY() - getCenterY();
+
+        double vectorX, vectorY, distance;
 
         double playerDistance = Math.sqrt(dx1*dx1 + dy1*dy1);
-
-        double dx2 = teammate.getPositionX() - getPositionX();
-        double dy2 = teammate.getPositionY() - getPositionY();
-
         double teammateDistance = Math.sqrt(dx2*dx2 + dy2*dy2);
 
-        double vectorX, vectorY;
         if (playerDistance < teammateDistance) {
+            distance = playerDistance;
             vectorX = dx1/playerDistance;
             vectorY = dy1/playerDistance;
         } else {
+            distance = teammateDistance;
             vectorX = dx2/teammateDistance;
             vectorY = dy2/teammateDistance;
+        }
+
+        for (Turret turret: world.getTurrets()) {
+            double dxTurret = turret.getCenterX() - getCenterX();
+            double dyTurret = turret.getCenterY() - getCenterY();
+
+            double sqrt = Math.sqrt(dxTurret*dxTurret + dyTurret*dyTurret);
+
+            if (sqrt < distance) {
+                distance = sqrt;
+                vectorX = dxTurret/distance;
+                vectorY = dyTurret/distance;
+            }
         }
 
         double oldPositionX = getPositionX();
@@ -122,7 +147,17 @@ public abstract class Zombie {
                 setPositionY(oldPositionY);
                 damageWall(wall, world);
 
-                break;
+                return;
+            }
+        }
+
+        for (Turret turret: world.getTurrets()) {
+            if (image.getBoundsInParent().intersects(turret.getImage().getBoundsInParent())) {
+                setPositionX(oldPositionX);
+                setPositionY(oldPositionY);
+
+                damageTurret(turret, world);
+                return;
             }
         }
     }
@@ -135,8 +170,18 @@ public abstract class Zombie {
                 world.deleteWall(wall);
             }
         }
-
     }
+
+    private void damageTurret(Turret turret, World world) {
+        if (getIntervalDamage() <= 0) {
+            turret.setHp(turret.getHp() - damage);
+            resetIntervalDamage();
+            if (turret.getHp() <= 0) {
+                world.deleteTurret(turret);
+            }
+        }
+    }
+
 
     public ImageView getImage() {
         return image;

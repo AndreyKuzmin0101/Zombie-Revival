@@ -62,7 +62,13 @@ public class Teammate {
 
     }
 
+    public double getCenterX() {
+        return getPositionX() + 26.5;
+    }
 
+    public double getCenterY() {
+        return getPositionY() + 35;
+    }
     public double getHp() {
         return hp;
     }

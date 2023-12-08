@@ -68,4 +68,12 @@ public class Bullet {
     public int getLifetime() {
         return lifetime;
     }
+
+    public double getCenterX() {
+        return getImageView().getLayoutX() + 5.5;
+    }
+
+    public double getCenterY() {
+        return getImageView().getLayoutY() + 5.5;
+    }
 }

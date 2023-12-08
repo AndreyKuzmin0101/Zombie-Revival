@@ -147,6 +147,12 @@ public class Client implements IClient {
             float positionY = byteBuffer.getFloat();
 
             this.game.getWorld().addWall(positionX, positionY);
+        } else if (message.getType() == Message.CREATE_TURRET) {
+            ByteBuffer byteBuffer = ByteBuffer.allocate(8).put(message.getData());
+            byteBuffer.rewind();
+            float positionX = byteBuffer.getFloat();
+            float positionY = byteBuffer.getFloat();
+            this.game.getWorld().addTurret(positionX, positionY);
         }
     }
 
@@ -195,6 +201,16 @@ public class Client implements IClient {
                 .array();
 
         sendMessage(Message.createMessage(Message.CREATE_WALL, data));
+    }
+
+    @Override
+    public void sendTurret(float positionX, float positionY) {
+        byte[] data = ByteBuffer.allocate(8)
+                .putFloat(positionX)
+                .putFloat(positionY)
+                .array();
+
+        sendMessage(Message.createMessage(Message.CREATE_TURRET, data));
     }
 
     private void sendMessage(Message message) {

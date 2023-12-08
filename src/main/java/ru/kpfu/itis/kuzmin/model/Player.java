@@ -14,6 +14,7 @@ import java.util.List;
 public class Player {
     public static final int SHOOT = 1;
     public static final int BUILD_WALL = 2;
+    public static final int BUILD_TURRET = 3;
     private ProgressBar hpBar;
     private double hp;
     private boolean right;
@@ -128,8 +129,17 @@ public class Player {
     }
 
     public void setWall(World world) {
-        world.addWall(mouseX, mouseY);
-        client.sendWall((float) mouseX, (float) mouseY);
+        if (role.getRoleCode() == Role.ENGINEER) {
+            world.addWall(mouseX, mouseY);
+            client.sendWall((float) mouseX, (float) mouseY);
+        }
+    }
+
+    public void setTurret(World world) {
+        if (role.getRoleCode() == Role.ENGINEER) {
+            world.addTurret(mouseX, mouseY);
+            client.sendTurret((float) mouseX, (float) mouseY);
+        }
     }
 
     public double getPositionX() {
@@ -148,6 +158,14 @@ public class Player {
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
         hpBar.setLayoutY(positionY - 20);
+    }
+
+    public double getCenterX() {
+        return getPositionX() + 26.5;
+    }
+
+    public double getCenterY() {
+        return getPositionY() + 35;
     }
 
     public void setHp(double hp) {

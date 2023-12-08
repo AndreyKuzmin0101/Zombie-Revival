@@ -15,6 +15,7 @@ public class Message {
     public static final byte ZOMBIE_DIE = 4;
     public static final byte PLAYER_DIE = 5;
     public static final byte CREATE_WALL = 6;
+    public static final byte CREATE_TURRET = 7;
 
     public static Message createMessage(byte messageType, byte[] data) {
         return new Message(messageType, data);

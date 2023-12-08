@@ -67,30 +67,56 @@ public class LevelView implements View {
                 player.changeMode(Player.SHOOT);
 
                 Engineer engineer = (Engineer) player.getRole();
-                if (engineer.getTimer() > 0) return;
+                if (engineer.getWallTimer() > 0) return;
 
                 ImageView testImage = new ImageView();
                 testImage.setLayoutX(player.getMouseX() - 20);
                 testImage.setLayoutY(player.getMouseY() - 20);
                 testImage.setFitHeight(40);
-                testImage.setFitHeight(40);
+                testImage.setFitWidth(40);
 
                 for (Zombie zombie: game.getWorld().getZombies()) {
                     if (zombie.getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
-                        player.changeMode(Player.SHOOT);
                         return;
                     }
                 }
 
                 if (player.getRole().getImage().getBoundsInParent().intersects(testImage.getBoundsInParent()) ||
                         game.getTeammate().getRole().getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
-                    player.changeMode(Player.SHOOT);
                     return;
                 }
 
+
                 player.setWall(game.getWorld());
 
-                engineer.resetTimer();
+                engineer.resetWallTimer();
+            } else if (player.getMode() == Player.BUILD_TURRET) {
+                player.changeMode(Player.SHOOT);
+
+                Engineer engineer = (Engineer) player.getRole();
+                if (engineer.getTurretTimer() > 0) return;
+
+                ImageView testImage = new ImageView();
+                testImage.setLayoutX(player.getMouseX() - 45);
+                testImage.setLayoutY(player.getMouseY() - 40);
+                testImage.setFitHeight(90);
+                testImage.setFitWidth(80);
+
+                for (Zombie zombie: game.getWorld().getZombies()) {
+                    if (zombie.getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())){
+                        return;
+                    }
+                }
+
+                if (player.getRole().getImage().getBoundsInParent().intersects(testImage.getBoundsInParent()) ||
+                        game.getTeammate().getRole().getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
+                    return;
+                }
+
+
+                player.setTurret(game.getWorld());
+
+                engineer.resetTurretTimer();
             }
         });
 
@@ -106,7 +132,10 @@ public class LevelView implements View {
         });
 
         if (player.getRole().getRoleCode() == Role.ENGINEER) {
-            Button wallButton = new Button("", new ImageView("/images/stone_wall.png"));
+            ImageView imageWall = new ImageView("/images/stone_wall.png");
+            imageWall.setFitWidth(60);
+            imageWall.setFitWidth(60);
+            Button wallButton = new Button("", imageWall);
             wallButton.setLayoutX(1737);
             wallButton.setLayoutY(908);
             wallButton.setPrefWidth(100);
@@ -117,6 +146,22 @@ public class LevelView implements View {
                 player.changeMode(Player.BUILD_WALL);
             });
             pane.getChildren().add(wallButton);
+
+            ImageView imageTurret = new ImageView("/images/turret.png");
+            imageTurret.setFitWidth(70);
+            imageTurret.setFitHeight(60);
+            Button turretButton = new Button("", imageTurret);
+            turretButton.setLayoutX(1617);
+            turretButton.setLayoutY(908);
+            turretButton.setPrefWidth(100);
+            turretButton.setPrefHeight(100);
+
+            turretButton.setOnAction(event -> {
+                player.setShoot(true);
+                player.changeMode(Player.BUILD_TURRET);
+            });
+
+            pane.getChildren().add(turretButton);
         }
 
         return scene;

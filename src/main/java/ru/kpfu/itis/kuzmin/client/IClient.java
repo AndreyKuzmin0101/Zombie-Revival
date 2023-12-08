@@ -22,4 +22,6 @@ public interface IClient {
     void sendPlayerDie();
 
     void sendWall(float positionX, float positionY);
+
+    void sendTurret(float positionX, float positionY);
 }

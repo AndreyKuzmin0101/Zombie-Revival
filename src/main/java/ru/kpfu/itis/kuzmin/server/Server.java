@@ -43,7 +43,8 @@ public class Server {
     }
 
     private void handleGameMessage(Message message, Connection connection) {
-        if (message.getType() == Message.MOVE || message.getType() == Message.SHOT || message.getType() == Message.CREATE_WALL) {
+        if (message.getType() == Message.MOVE || message.getType() == Message.SHOT || message.getType() == Message.CREATE_WALL
+                || message.getType() == Message.CREATE_TURRET) {
             connection.getLobby().forwardMessage(message, connection);
         } else if (message.getType() == Message.ZOMBIE_DIE) {
             int id = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();

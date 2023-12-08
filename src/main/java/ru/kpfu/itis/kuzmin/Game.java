@@ -31,12 +31,14 @@ public class Game {
     public void prepareOneFrame(long currentTime) {
         double elapsedTime = (currentTime - lastTime) / 1e9;
         if (player.getRole().getRoleCode() == Role.ENGINEER) {
-            ((Engineer) player.getRole()).reduceTimer(elapsedTime);
+            ((Engineer) player.getRole()).reduceWallTimer(elapsedTime);
+            ((Engineer) player.getRole()).reduceTurretTimer(elapsedTime);
         }
         player.move(world, elapsedTime);
         player.shoot(world, elapsedTime);
         world.moveBullets(elapsedTime);
         world.deleteOldBullets();
+        world.shootTurrets(elapsedTime);
         world.checkIntersectBulletsAndZombies();
         world.moveZombies(player, teammate, elapsedTime);
         world.checkIntersectPlayersAndZombies(player, teammate, elapsedTime);

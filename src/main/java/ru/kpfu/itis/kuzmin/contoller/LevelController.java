@@ -11,6 +11,7 @@ import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
+import ru.kpfu.itis.kuzmin.model.defense.Turret;
 import ru.kpfu.itis.kuzmin.model.defense.Wall;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
@@ -114,6 +115,21 @@ public class LevelController {
         Platform.runLater(() -> {
             ((AnchorPane) scene.getRoot()).getChildren().remove(wall.getImage());
             ((AnchorPane) scene.getRoot()).getChildren().remove(wall.getProgressBar());
+        });
+    }
+
+    public static void addTurret(Turret turret) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().add(turret.getImage());
+            ((AnchorPane) scene.getRoot()).getChildren().add(turret.getProgressBar());
+
+        });
+    }
+
+    public static void removeTurret(Turret turret) {
+        Platform.runLater(() -> {
+            ((AnchorPane) scene.getRoot()).getChildren().remove(turret.getImage());
+            ((AnchorPane) scene.getRoot()).getChildren().remove(turret.getProgressBar());
         });
     }
 }

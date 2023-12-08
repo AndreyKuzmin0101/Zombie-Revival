@@ -3,26 +3,43 @@ package ru.kpfu.itis.kuzmin.model.role;
 import ru.kpfu.itis.kuzmin.model.gun.Revolver;
 
 public class Engineer extends Role{
-    private double timer;
-    private final double interval;
+    private double wallTimer;
+    private final double wallInterval;
+
+    private double turretTimer;
+    private final double turretInterval;
+
     private int lvlWall;
     public Engineer() {
         super(150, Role.ENGINEER);
         setDefaultWeapon(new Revolver());
         this.lvlWall = 1;
-        interval = 5;
-        timer = interval;
+        wallInterval = 5;
+        wallTimer = wallInterval;
+        turretInterval = 10;
+        turretTimer = turretInterval;
     }
 
-    public double getTimer() {
-        return timer;
+    public double getWallTimer() {
+        return wallTimer;
     }
-    public void resetTimer() {
-        timer = interval;
+    public void resetWallTimer() {
+        wallTimer = wallInterval;
     }
 
-    public void reduceTimer(double elapsedTime) {
-        timer -= elapsedTime;
+    public void reduceWallTimer(double elapsedTime) {
+        wallTimer -= elapsedTime;
+    }
+
+    public double getTurretTimer() {
+        return turretTimer;
+    }
+    public void resetTurretTimer() {
+        turretTimer = turretInterval;
+    }
+
+    public void reduceTurretTimer(double elapsedTime) {
+        turretTimer -= elapsedTime;
     }
 
     public int getLvlWall() {
