@@ -1,9 +1,11 @@
 package ru.kpfu.itis.kuzmin.client;
 
+import javafx.application.Platform;
 import ru.kpfu.itis.kuzmin.AppClient;
 import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.contoller.LevelResultController;
+import ru.kpfu.itis.kuzmin.contoller.LobbyController;
 import ru.kpfu.itis.kuzmin.model.Player;
 import ru.kpfu.itis.kuzmin.model.Teammate;
 import ru.kpfu.itis.kuzmin.model.World;
@@ -14,6 +16,8 @@ import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 import ru.kpfu.itis.kuzmin.protocol.Message;
 import ru.kpfu.itis.kuzmin.util.ZombieFactory;
 import ru.kpfu.itis.kuzmin.view.LevelView;
+import ru.kpfu.itis.kuzmin.view.LobbyView;
+import ru.kpfu.itis.kuzmin.view.MainMenuView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -21,6 +25,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 
 public class Client implements IClient {
@@ -38,7 +43,7 @@ public class Client implements IClient {
     }
 
     @Override
-    public void start() {
+    public void start(String nickname, Integer code) {
         connect();
         BufferedInputStream input;
         BufferedOutputStream output;
@@ -51,6 +56,21 @@ public class Client implements IClient {
 
         thread = new ClientThread(input, output, this);
         new Thread(thread).start();
+
+        LobbyController.playerNickname = nickname;
+        if (code == null) {
+            sendMessage(Message.createMessage(Message.CREATE_LOBBY, nickname.getBytes(StandardCharsets.UTF_8)));
+        } else {
+            sendMessage(Message.createMessage(Message.USERNAME, nickname.getBytes(StandardCharsets.UTF_8)));
+            sendMessage(Message.createMessage(Message.JOIN_LOBBY, ByteBuffer.allocate(4).putInt(code).array()));
+        }
+
+    }
+
+    public void leaveLobby() {
+        sendMessage(Message.createMessage(Message.LEAVE_LOBBY, new byte[0]));
+        MainMenuView mainMenuView = new MainMenuView();
+        appClient.setView(mainMenuView);
     }
 
     @Override
@@ -89,8 +109,28 @@ public class Client implements IClient {
 
 
     public void handleMessage(Message message) throws IOException {
-
-        if (message.getType() == Message.START_GAME) {
+        if (message.getType() == Message.CREATE_LOBBY) {
+            LobbyController.code = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();
+            LobbyView lobbyView = new LobbyView();
+            appClient.setView(lobbyView);
+        } else if (message.getType() == Message.USERNAME) {
+            LobbyController.teammateNickname = new String(message.getData(), StandardCharsets.UTF_8);
+            Platform.runLater(() -> {
+                LobbyController.scene = appClient.getView();
+            });
+            LobbyController.addPlayer();
+        } else if (message.getType() == Message.JOIN_LOBBY) {
+            if (message.getData().length != 0) {
+                LobbyController.code = ByteBuffer.allocate(4).put(message.getData()).rewind().getInt();
+                LobbyView lobbyView = new LobbyView();
+                appClient.setView(lobbyView);
+            } else {
+                System.out.println("Лобби с таким кодом не существует, либо оно уже заполнено");
+            }
+        } else if (message.getType() == Message.LEAVE_LOBBY) {
+            LobbyController.removePlayer();
+        }
+        else if (message.getType() == Message.START_GAME) {
             byte[] data = message.getData();
             if (data[0] == 0) {
                 startGame(new Shooter());

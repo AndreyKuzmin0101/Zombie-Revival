@@ -26,9 +26,19 @@ public class ClientThread implements Runnable {
 
                 client.handleMessage(message);
             }
+        } catch (IOException | IllegalArgumentException ignored) {
+            closeIO();
+        }
+    }
+
+    private void closeIO() {
+        try {
+            input.close();
+            output.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public BufferedOutputStream getOutput() {

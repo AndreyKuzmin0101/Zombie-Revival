@@ -1,8 +1,10 @@
 package ru.kpfu.itis.kuzmin.server;
 
-import javafx.scene.Parent;
 import ru.kpfu.itis.kuzmin.level.Level;
 import ru.kpfu.itis.kuzmin.protocol.Message;
+
+import java.nio.ByteBuffer;
+import java.util.Random;
 
 
 public class Lobby implements Runnable{
@@ -11,18 +13,15 @@ public class Lobby implements Runnable{
     private Connection player1;
     private Connection player2;
     private Level level;
-    private int lvl;
+    private int id;
 
-    public Lobby(Server server, Connection player1, Connection player2, int lvl) {
+    public Lobby(Server server, Connection player1, int id) {
         this.server = server;
+        this.id = id;
         this.player1 = player1;
-        this.player2 = player2;
-        this.lvl = lvl;
-
         this.player1.setLobby(this);
-        this.player2.setLobby(this);
-
-
+        player1.sendMessage(Message.createMessage(Message.CREATE_LOBBY,
+                ByteBuffer.allocate(4).putInt(id).array()));
     }
 
     //TODO: фабрика уровней
@@ -71,7 +70,54 @@ public class Lobby implements Runnable{
         player2.sendMessage(message);
     }
 
+    public void setPlayer2(Connection connection) {
+        if (player1 == null){
+            player1 = connection;
+        } else {
+            player2 = connection;
+        }
+    }
+
+    public Connection getPlayer2(Connection connection) {
+        if (player1 == connection) {
+            return player2;
+        } else {
+            return player1;
+        }
+    }
+
+    public void leave(Connection connection) {
+        if (player1 == connection) {
+            player1 = null;
+        } else if (player2 == connection){
+            player2 = null;
+        }
+        if (player1 == null && player2 == null) {
+            server.removeLobby(this);
+        }
+    }
+
+    public boolean isFull() {
+        if (player1 != null && player2 != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Level getLevel() {
         return level;
+    }
+
+    public static int getRandomCode() {
+        Random random = new Random();
+        return random.nextInt(0,100000);
     }
 }

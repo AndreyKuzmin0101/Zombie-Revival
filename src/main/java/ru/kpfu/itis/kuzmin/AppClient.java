@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.kpfu.itis.kuzmin.client.Client;
+import ru.kpfu.itis.kuzmin.contoller.LobbyController;
+import ru.kpfu.itis.kuzmin.contoller.MainMenuController;
+import ru.kpfu.itis.kuzmin.view.MainMenuView;
 import ru.kpfu.itis.kuzmin.view.View;
 
 import java.io.IOException;
@@ -19,27 +22,34 @@ public class AppClient extends Application {
     }
 
     private Stage stage;
+    private Client client;
 
     @Override
     public void start(Stage stage) throws Exception {
 
         this.stage = stage;
-
         stage.setOnCloseRequest(e -> System.exit(0));
 
-        Client client = new Client(InetAddress.getByName(HOST), PORT, this);
-        client.start();
+
+
+        client = new Client(InetAddress.getByName(HOST), PORT, this);
+        MainMenuController.client = client;
+        LobbyController.client = client;
+
+        MainMenuView mainMenuView = new MainMenuView();
+        stage.setScene(mainMenuView.getScene());
 
         stage.setMaximized(true);
         stage.centerOnScreen();
-        stage.setTitle("Зомби Возрождение");
+        stage.setTitle("Zombie Revival");
         stage.show();
     }
 
     public void setView(View view) {
         Platform.runLater(() -> {
             try {
-                stage.setScene(view.getScene());
+                Scene scene = view.getScene();
+                stage.setScene(scene);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

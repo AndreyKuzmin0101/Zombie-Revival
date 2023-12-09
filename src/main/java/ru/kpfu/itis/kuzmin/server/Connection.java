@@ -15,7 +15,6 @@ public class Connection implements Runnable {
     private BufferedInputStream input;
     private BufferedOutputStream output;
     private String username;
-
     private Lobby lobby;
 
     public Connection(Server server, Socket socket) {
@@ -42,7 +41,9 @@ public class Connection implements Runnable {
                 server.handleMessage(message, this);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            if (lobby != null) getLobby().leave(this);
+
+            server.removeConnection(this);
         }
     }
 
@@ -61,5 +62,21 @@ public class Connection implements Runnable {
 
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void close() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

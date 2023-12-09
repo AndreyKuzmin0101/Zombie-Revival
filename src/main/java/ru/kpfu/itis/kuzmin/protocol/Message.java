@@ -6,6 +6,7 @@ import java.io.IOException;
 
 // Message contents: [TYPE (1), DATA LENGTH(1), DATA(?)]
 public class Message {
+
     public static final byte LOSE = -3;
     public static final byte VICTORY = -2;
     public static final byte SPAWN_ZOMBIE = -1;
@@ -16,6 +17,10 @@ public class Message {
     public static final byte PLAYER_DIE = 5;
     public static final byte CREATE_WALL = 6;
     public static final byte CREATE_TURRET = 7;
+    public static final byte CREATE_LOBBY = 8;
+    public static final byte USERNAME = 9;
+    public static final byte JOIN_LOBBY = 10;
+    public static final byte LEAVE_LOBBY = 11;
 
     public static Message createMessage(byte messageType, byte[] data) {
         return new Message(messageType, data);
