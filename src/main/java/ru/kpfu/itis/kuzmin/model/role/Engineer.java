@@ -14,9 +14,9 @@ public class Engineer extends Role{
         super(150, Role.ENGINEER);
         setDefaultWeapon(new Revolver());
         this.lvlWall = 1;
-        wallInterval = 5;
+        wallInterval = 7;
         wallTimer = wallInterval;
-        turretInterval = 10;
+        turretInterval = 15;
         turretTimer = turretInterval;
     }
 

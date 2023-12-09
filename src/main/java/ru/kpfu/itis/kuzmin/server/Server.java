@@ -76,7 +76,10 @@ public class Server {
             connection.getLobby().leave(connection);
             connections.remove(connection);
             connection.close();
-        } else if (connection.getLobby().getLevel() != null) handleGameMessage(message, connection);
+        } else if (message.getType() == Message.START_GAME) {
+            connection.getLobby().startGame();
+        }
+        else if (connection.getLobby().getLevel() != null) handleGameMessage(message, connection);
     }
 
     private void handleGameMessage(Message message, Connection connection) {

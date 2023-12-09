@@ -253,6 +253,10 @@ public class Client implements IClient {
         sendMessage(Message.createMessage(Message.CREATE_TURRET, data));
     }
 
+    public void sendStartGame() {
+        sendMessage(Message.createMessage(Message.START_GAME, new byte[0]));
+    }
+
     private void sendMessage(Message message) {
         try {
             thread.getOutput().write(Message.getBytes(message));

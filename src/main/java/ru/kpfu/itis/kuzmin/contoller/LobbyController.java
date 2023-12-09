@@ -40,7 +40,7 @@ public class LobbyController {
 
     @FXML
     void startLevel(ActionEvent event) {
-
+        client.sendStartGame();
     }
 
     @FXML
