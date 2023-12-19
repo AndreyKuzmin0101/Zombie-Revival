@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Level {
+public class Level implements ILevel{
     private Lobby lobby;
     private Spawner spawner;
     private List<ZombieModel> zombies;
@@ -19,6 +19,7 @@ public class Level {
         zombies = new ArrayList<>();
     }
 
+    @Override
     public void startGame() {
         ZombieModel zombie;
         while ((zombie = spawner.getZombie()) != null) {
@@ -28,10 +29,12 @@ public class Level {
         }
     }
 
+    @Override
     public void stopGame() {
         spawner.setInActive();
     }
 
+    @Override
     public boolean deleteZombie(int id) {
         Iterator<ZombieModel> iterator = zombies.iterator();
         while (iterator.hasNext()) {

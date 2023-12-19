@@ -5,20 +5,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import ru.kpfu.itis.kuzmin.client.Client;
 import ru.kpfu.itis.kuzmin.view.LevelResultView;
 
 import java.io.IOException;
 
 public class LevelResultController {
 
+    public static Client client;
+
     @FXML
     void restart(ActionEvent event) {
-        // some logic
+        client.sendStartGame();
     }
 
     @FXML
     void exit(ActionEvent event) {
-
+        client.leaveLobby();
     }
 
     @FXML

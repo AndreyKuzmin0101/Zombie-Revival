@@ -5,12 +5,9 @@ import ru.kpfu.itis.kuzmin.model.role.Role;
 import java.io.IOException;
 
 public interface IClient {
-
-
     void start(String nickname, Integer code);
 
     void connect();
-
 
     void startGame(Role role) throws IOException;
 
@@ -27,4 +24,6 @@ public interface IClient {
     void sendWall(float positionX, float positionY);
 
     void sendTurret(float positionX, float positionY);
+
+    void sendStartGame();
 }

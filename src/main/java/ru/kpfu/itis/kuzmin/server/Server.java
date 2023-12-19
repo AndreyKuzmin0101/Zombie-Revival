@@ -9,12 +9,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class Server {
+public class Server implements IServer{
     private static final int PORT = 5555;
     private ServerSocket server;
     private ArrayList<Connection> connections = new ArrayList<>();
     private ArrayList<Lobby> lobbies = new ArrayList<>();
 
+    @Override
     public void start() {
         try {
             server = new ServerSocket(PORT);
@@ -32,6 +33,7 @@ public class Server {
 
     }
 
+    @Override
     public void handleMessage(Message message, Connection connection) {
         if (message.getType() == Message.CREATE_LOBBY) {
             connection.setUsername(new String(message.getData()));
@@ -104,12 +106,16 @@ public class Server {
         return null;
     }
 
+    @Override
     public void removeConnection(Connection connection) {
         connections.remove(connection);
     }
+
+    @Override
     public void removeLobby(Lobby lobby) {
         lobbies.remove(lobby);
     }
+
     public static void main(String[] args) {
         Server server = new Server();
         server.start();

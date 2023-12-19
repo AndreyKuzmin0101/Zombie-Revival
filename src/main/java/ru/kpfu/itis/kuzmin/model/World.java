@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-public class World {
+public class World implements IWorld {
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private ArrayList<Zombie> zombies = new ArrayList<>();
     private ArrayList<Integer> deadZombieIds = new ArrayList<>();
@@ -25,6 +25,7 @@ public class World {
         this.client = client;
     }
 
+    @Override
     public void moveBullets(double elapsedTime) {
 
         Iterator<Bullet> iterator = bullets.iterator();
@@ -37,6 +38,7 @@ public class World {
         }
     }
 
+    @Override
     public void deleteOldBullets() {
         Iterator<Bullet> iterator = bullets.iterator();
         while (iterator.hasNext()) {
@@ -48,7 +50,7 @@ public class World {
         }
     }
 
-    //TODO: оптимизировать
+    @Override
     public void checkIntersectBulletsAndZombies() {
         Iterator<Bullet> bulletIterator = bullets.iterator();
         while (bulletIterator.hasNext()) {
@@ -81,6 +83,7 @@ public class World {
 
     }
 
+    @Override
     public void checkIntersectPlayersAndZombies(Player player, Teammate teammate, double elapsedTime) {
         for(Zombie zombie: zombies) {
             zombie.reduceIntervalDamage(elapsedTime);
@@ -104,33 +107,41 @@ public class World {
         }
     }
 
+    @Override
     public void addBullet(Bullet bullet) {
         bullets.add(bullet);
     }
+
+    @Override
     public void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
 
+    @Override
     public void moveZombies(Player player, Teammate teammate, double elapsedTime) {
         for (Zombie zombie : zombies) {
             zombie.move(player, teammate, elapsedTime, this);
         }
     }
 
+    @Override
     public void addDeadZombieId(int id) {
         deadZombieIds.add(id);
     }
 
+    @Override
     public void addWall(double positionX, double positionY) {
         Wall wall = new StoneWall(positionX, positionY);
         walls.add(wall);
     }
 
+    @Override
     public void addTurret(double positionX, double positionY) {
         Turret turret = new DefaultTurret(positionX, positionY);
         turrets.add(turret);
     }
 
+    @Override
     public void shootTurrets(double elapsedTime) {
         for (Turret turret : turrets) {
             turret.shoot(this, elapsedTime);
@@ -155,24 +166,29 @@ public class World {
         }
     }
 
+    @Override
     public ArrayList<Wall> getWalls() {
         return walls;
     }
 
+    @Override
     public ArrayList<Turret> getTurrets() {
         return turrets;
     }
 
+    @Override
     public void deleteWall(Wall wall) {
         walls.remove(wall);
         LevelController.removeWall(wall);
     }
 
+    @Override
     public void deleteTurret(Turret turret) {
         turrets.remove(turret);
         LevelController.removeTurret(turret);
     }
 
+    @Override
     public ArrayList<Zombie> getZombies() {
         return zombies;
     }

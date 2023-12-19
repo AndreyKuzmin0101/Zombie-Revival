@@ -10,7 +10,7 @@ import ru.kpfu.itis.kuzmin.model.World;
 import ru.kpfu.itis.kuzmin.model.defense.Turret;
 import ru.kpfu.itis.kuzmin.model.defense.Wall;
 
-public abstract class Zombie {
+public abstract class Zombie implements IZombie{
     public static final byte SHAMBLING_CITIZEN = 1;
     private int id;
     private int type;
@@ -48,44 +48,54 @@ public abstract class Zombie {
 
     }
 
+    @Override
     public double getIntervalDamage() {
         return intervalDamage;
     }
 
+    @Override
     public void resetIntervalDamage() {
         intervalDamage = speedDamage;
     }
 
+    @Override
     public void reduceIntervalDamage(double elapsedTime) {
         intervalDamage -= elapsedTime;
     }
 
+    @Override
     public double getPositionX() {
         return image.getLayoutX();
     }
 
+    @Override
     public void setPositionX(double positionX) {
         image.setLayoutX(positionX);
         hpProgressBar.setLayoutX(positionX);
     }
 
+    @Override
     public double getPositionY() {
         return image.getLayoutY();
     }
 
+    @Override
     public void setPositionY(double positionY) {
         image.setLayoutY(positionY);
         hpProgressBar.setLayoutY(positionY-20);
     }
 
+    @Override
     public double getCenterX() {
         return getPositionX() + 26.5;
     }
 
+    @Override
     public double getCenterY() {
         return getPositionY() + 35;
     }
 
+    @Override
     public double damage(Player player, Teammate teammate) {
         if (player.getRole().getImage().getBoundsInParent().intersects(getImage().getBoundsInParent())) {
             player.setHp(player.getHp() - getDamage());
@@ -98,8 +108,7 @@ public abstract class Zombie {
         return player.getHp();
     }
 
-    //TODO: продумать обход препятствий
-
+    @Override
     public void move(Player player, Teammate teammate, double elapsedTime, World world) {
         double dx1 = player.getCenterX() - getCenterX();
         double dy1 = player.getCenterY() - getCenterY();
@@ -162,7 +171,8 @@ public abstract class Zombie {
         }
     }
 
-    private void damageWall(Wall wall, World world) {
+    @Override
+    public void damageWall(Wall wall, World world) {
         if (getIntervalDamage() <= 0) {
             wall.setHp(wall.getHp() - damage);
             resetIntervalDamage();
@@ -172,7 +182,8 @@ public abstract class Zombie {
         }
     }
 
-    private void damageTurret(Turret turret, World world) {
+    @Override
+    public void damageTurret(Turret turret, World world) {
         if (getIntervalDamage() <= 0) {
             turret.setHp(turret.getHp() - damage);
             resetIntervalDamage();
@@ -182,56 +193,68 @@ public abstract class Zombie {
         }
     }
 
-
+    @Override
     public ImageView getImage() {
         return image;
     }
 
+    @Override
     public void setImage(ImageView image) {
         this.image = image;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public int getType() {
         return type;
     }
 
+    @Override
     public void setType(int type) {
         this.type = type;
     }
 
+    @Override
     public double getHp() {
         return hp;
     }
 
+    @Override
     public void setHp(double hp) {
         this.hp = hp;
         this.hpProgressBar.setProgress(hp/this.startHp);
     }
 
+    @Override
     public int getDamage() {
         return damage;
     }
 
+    @Override
     public void setDamage(int damage) {
         this.damage = damage;
     }
 
+    @Override
     public float getSpeed() {
         return speed;
     }
 
+    @Override
     public void setSpeed(float speed) {
         this.speed = speed;
     }
 
+    @Override
     public ProgressBar getHpProgressBar() {
         return hpProgressBar;
     }

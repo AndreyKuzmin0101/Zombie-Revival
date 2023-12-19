@@ -34,28 +34,5 @@ public class ZombieModel{
         this.id = id;
     }
 
-    public byte getType() {
-        return type;
-    }
-
-    public void setType(byte type) {
-        this.type = type;
-    }
-
-    public float getStartPositionX() {
-        return startPositionX;
-    }
-
-    public void setStartPositionX(float startPositionX) {
-        this.startPositionX = startPositionX;
-    }
-
-    public float getStartPositionY() {
-        return startPositionY;
-    }
-
-    public void setStartPositionY(float startPositionY) {
-        this.startPositionY = startPositionY;
-    }
 
 }

@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.kpfu.itis.kuzmin.client.Client;
+import ru.kpfu.itis.kuzmin.contoller.LevelResultController;
 import ru.kpfu.itis.kuzmin.contoller.LobbyController;
 import ru.kpfu.itis.kuzmin.contoller.MainMenuController;
 import ru.kpfu.itis.kuzmin.view.MainMenuView;
@@ -35,6 +36,7 @@ public class AppClient extends Application {
         client = new Client(InetAddress.getByName(HOST), PORT, this);
         MainMenuController.client = client;
         LobbyController.client = client;
+        LevelResultController.client = client;
 
         MainMenuView mainMenuView = new MainMenuView();
         stage.setScene(mainMenuView.getScene());

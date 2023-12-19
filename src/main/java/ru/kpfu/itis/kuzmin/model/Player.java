@@ -11,7 +11,7 @@ import ru.kpfu.itis.kuzmin.model.role.Role;
 
 import java.util.List;
 
-public class Player {
+public class Player implements IPlayer{
     public static final int SHOOT = 1;
     public static final int BUILD_WALL = 2;
     public static final int BUILD_TURRET = 3;
@@ -38,6 +38,7 @@ public class Player {
         this.mode = SHOOT;
     }
 
+    @Override
     public void shoot(World world, double elapsedTime) {
         weapon.reduceInterval(elapsedTime);
 
@@ -70,6 +71,7 @@ public class Player {
         }
     }
 
+    @Override
     public void move(World world, double elapsedTime) {
         List<Wall> walls = world.getWalls();
 
@@ -128,6 +130,7 @@ public class Player {
 
     }
 
+    @Override
     public void setWall(World world) {
         if (role.getRoleCode() == Role.ENGINEER) {
             world.addWall(mouseX, mouseY);
@@ -135,6 +138,7 @@ public class Player {
         }
     }
 
+    @Override
     public void setTurret(World world) {
         if (role.getRoleCode() == Role.ENGINEER) {
             world.addTurret(mouseX, mouseY);
@@ -142,32 +146,39 @@ public class Player {
         }
     }
 
+    @Override
     public double getPositionX() {
         return role.getImage().getLayoutX();
     }
 
+    @Override
     public void setPositionX(double positionX) {
         role.getImage().setLayoutX(positionX);
         hpBar.setLayoutX(positionX);
     }
 
+    @Override
     public double getPositionY() {
         return role.getImage().getLayoutY();
     }
 
+    @Override
     public void setPositionY(double positionY) {
         role.getImage().setLayoutY(positionY);
         hpBar.setLayoutY(positionY - 20);
     }
 
+    @Override
     public double getCenterX() {
         return getPositionX() + 26.5;
     }
 
+    @Override
     public double getCenterY() {
         return getPositionY() + 35;
     }
 
+    @Override
     public void setHp(double hp) {
         if (hp <= 0) {
             this.hp = 0;
@@ -178,72 +189,82 @@ public class Player {
         }
     }
 
+    @Override
     public void changeMode(int newMode) {
         this.mode = newMode;
     }
 
+    @Override
     public int getMode() {
         return mode;
     }
 
+    @Override
     public double getHp() {
         return hp;
     }
 
-
+    @Override
     public void setHpProgressBar(ProgressBar progressBar) {
         this.hpBar = progressBar;
     }
 
+    @Override
     public void setRight(boolean right) {
         this.right = right;
     }
 
-
+    @Override
     public void setLeft(boolean left) {
         this.left = left;
     }
 
-
+    @Override
     public void setUp(boolean up) {
         this.up = up;
     }
 
-
+    @Override
     public void setDown(boolean down) {
         this.down = down;
     }
 
+    @Override
     public Role getRole() {
         return role;
     }
 
+    @Override
     public void setRole(Role role) {
         this.role = role;
     }
 
+    @Override
     public void setShoot(boolean shoot) {
         this.shoot = shoot;
     }
 
-
+    @Override
     public void setMouseX(double mouseX) {
         this.mouseX = mouseX;
     }
 
-
+    @Override
     public void setMouseY(double mouseY) {
         this.mouseY = mouseY;
     }
 
+    @Override
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
 
+    @Override
     public double getMouseX() {
         return mouseX;
     }
 
+    @Override
     public double getMouseY() {
         return mouseY;
     }

@@ -1,6 +1,6 @@
 package ru.kpfu.itis.kuzmin.model.gun;
 
-public class Weapon {
+public class Weapon implements IWeapon{
     private final double rateOfFire;
     private int bulletVelocity;
     private double damage;
@@ -13,30 +13,28 @@ public class Weapon {
         interval = 0;
     }
 
+    @Override
     public double getDamage() {
         return damage;
     }
 
-    public void setDamage(double damage) {
-        this.damage = damage;
-    }
-
+    @Override
     public void reduceInterval(double elapsedTime) {
         interval -= elapsedTime;
     }
+
+    @Override
     public void resumeInterval() {
         interval = rateOfFire;
     }
 
+    @Override
     public double getInterval() {
         return interval;
     }
 
+    @Override
     public int getBulletVelocity() {
         return bulletVelocity;
-    }
-
-    public void setBulletVelocity(int bulletVelocity) {
-        this.bulletVelocity = bulletVelocity;
     }
 }

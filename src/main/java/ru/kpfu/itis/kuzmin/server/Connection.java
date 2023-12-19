@@ -7,7 +7,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class Connection implements Runnable {
+public class Connection implements IConnection {
 
     private Socket socket;
     private Thread thread;
@@ -47,6 +47,7 @@ public class Connection implements Runnable {
         }
     }
 
+    @Override
     public void sendMessage(Message message) {
         try {
             output.write(Message.getBytes(message));
@@ -56,22 +57,27 @@ public class Connection implements Runnable {
         }
     }
 
+    @Override
     public Lobby getLobby() {
         return lobby;
     }
 
+    @Override
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    @Override
     public void setUsername(String username) {
         this.username = username;
     }
 
+    @Override
     public void close() {
         try {
             socket.close();

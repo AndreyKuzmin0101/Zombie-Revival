@@ -5,7 +5,7 @@ import ru.kpfu.itis.kuzmin.protocol.ZombieModel;
 
 import java.util.*;
 
-public class Spawner {
+public class Spawner implements ISpawner{
     private boolean active;
     private Queue<ZombieModel> zombies;
     private Queue<Integer> intervals;
@@ -16,6 +16,7 @@ public class Spawner {
         active = true;
     }
 
+    @Override
     public ZombieModel getZombie() {
         if (zombies.size() == 0 || !active) {
             active = false;
@@ -36,9 +37,9 @@ public class Spawner {
         Queue<Integer> intervals = new LinkedList<>();
         switch (lvl) {
             case 1:
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 15; i++) {
                     zombies.add(new ZombieModel(i, (byte) 1, (float) World.getZombieStartPositionX(), (float) World.getZombieStartPositionY()));
-                    intervals.add(4000);
+                    intervals.add(5000);
                 }
                 break;
         }
@@ -46,15 +47,13 @@ public class Spawner {
         return new Spawner(zombies, intervals);
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
 
+    @Override
     public void setInActive() {
         this.active = false;
-    }
-
-    public Queue<ZombieModel> getZombies() {
-        return zombies;
     }
 }

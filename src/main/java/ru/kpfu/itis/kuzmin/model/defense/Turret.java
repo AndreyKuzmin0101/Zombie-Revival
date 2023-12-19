@@ -8,7 +8,7 @@ import ru.kpfu.itis.kuzmin.model.gun.Bullet;
 import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
 
-public abstract class Turret {
+public abstract class Turret implements ITurret{
     private double hp;
     private double startHp;
     private ImageView image;
@@ -35,6 +35,7 @@ public abstract class Turret {
         LevelController.addTurret(this);
     }
 
+    @Override
     public void shoot(World world, double elapsedTime) {
         weapon.reduceInterval(elapsedTime);
         if (weapon.getInterval() <= 0) {
@@ -69,38 +70,44 @@ public abstract class Turret {
         }
     }
 
+    @Override
     public double getPositionX() {
         return image.getLayoutX();
     }
 
+    @Override
     public double getPositionY() {
         return image.getLayoutY();
     }
 
+    @Override
     public double getCenterX() {
         return getPositionX() + 45;
     }
 
+    @Override
     public double getCenterY() {
         return getPositionY() + 40;
     }
 
+    @Override
     public double getHp() {
         return hp;
     }
 
+    @Override
     public void setHp(double hp) {
         this.hp = hp;
         this.progressBar.setProgress(hp / this.startHp);
     }
 
+    @Override
     public ImageView getImage() {
         return image;
     }
 
+    @Override
     public ProgressBar getProgressBar() {
         return progressBar;
     }
-
-
 }

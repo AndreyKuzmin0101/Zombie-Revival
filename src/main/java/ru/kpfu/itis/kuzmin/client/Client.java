@@ -1,6 +1,9 @@
 package ru.kpfu.itis.kuzmin.client;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import ru.kpfu.itis.kuzmin.AppClient;
 import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
@@ -36,6 +39,8 @@ public class Client implements IClient {
     private ClientThread thread;
     private Game game;
 
+    private boolean inGame = false;
+
     public Client(InetAddress host, int port, AppClient appClient) {
         this.host = host;
         this.port = port;
@@ -68,6 +73,8 @@ public class Client implements IClient {
     }
 
     public void leaveLobby() {
+        inGame = false;
+
         sendMessage(Message.createMessage(Message.LEAVE_LOBBY, new byte[0]));
         MainMenuView mainMenuView = new MainMenuView();
         appClient.setView(mainMenuView);
@@ -84,6 +91,8 @@ public class Client implements IClient {
 
     @Override
     public void startGame(Role role) throws IOException {
+        inGame = true;
+
         Role teammateRole;
         if (role.getRoleCode() == Role.SHOOTER) teammateRole = new Engineer();
         else teammateRole = new Shooter();
@@ -101,6 +110,7 @@ public class Client implements IClient {
 
     @Override
     public void stopGame(byte result) {
+
         LevelController.stopGameLogic();
         LevelResultController.showResult(result, appClient.getView());
 
@@ -129,6 +139,22 @@ public class Client implements IClient {
             }
         } else if (message.getType() == Message.LEAVE_LOBBY) {
             LobbyController.removePlayer();
+            if (inGame) {
+                MainMenuView mainMenuView = new MainMenuView();
+                appClient.setView(mainMenuView);
+
+                Label label = new Label("Ваш тиммейт отсоединился...");
+                label.setStyle("-fx-text-fill: white");
+                label.setFont(Font.font(20));
+                label.setLayoutX(1630);
+                label.setLayoutY(20);
+
+                Platform.runLater(() -> {
+                    ((AnchorPane)(appClient.getView().getRoot())).getChildren().add(label);
+                });
+
+                inGame = false;
+            }
         }
         else if (message.getType() == Message.START_GAME) {
             byte[] data = message.getData();
@@ -253,6 +279,7 @@ public class Client implements IClient {
         sendMessage(Message.createMessage(Message.CREATE_TURRET, data));
     }
 
+    @Override
     public void sendStartGame() {
         sendMessage(Message.createMessage(Message.START_GAME, new byte[0]));
     }

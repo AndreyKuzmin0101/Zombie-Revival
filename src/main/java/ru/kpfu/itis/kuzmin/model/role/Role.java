@@ -4,7 +4,7 @@ import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.model.gun.Weapon;
 
 
-public abstract class Role {
+public abstract class Role implements IRole {
     public static final int SHOOTER = 0;
     public static final int ENGINEER = 1;
     private double speed;
@@ -17,34 +17,33 @@ public abstract class Role {
         this.speed = speed;
         this.roleCode = roleCode;
     }
+
+    @Override
     public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
+    @Override
     public int getRoleCode() {
         return roleCode;
     }
 
-    public void setRoleCode(int roleCode) {
-        this.roleCode = roleCode;
-    }
-
+    @Override
     public Weapon getDefaultWeapon() {
         return defaultWeapon;
     }
 
+    @Override
     public void setDefaultWeapon(Weapon defaultWeapon) {
         this.defaultWeapon = defaultWeapon;
     }
 
+    @Override
     public ImageView getImage() {
         return image;
     }
 
+    @Override
     public void setImage(ImageView image) {
         this.image = image;
     }

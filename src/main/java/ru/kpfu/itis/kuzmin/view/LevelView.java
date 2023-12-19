@@ -11,6 +11,8 @@ import ru.kpfu.itis.kuzmin.AppClient;
 import ru.kpfu.itis.kuzmin.Game;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 import ru.kpfu.itis.kuzmin.model.Player;
+import ru.kpfu.itis.kuzmin.model.defense.Turret;
+import ru.kpfu.itis.kuzmin.model.defense.Wall;
 import ru.kpfu.itis.kuzmin.model.role.Engineer;
 import ru.kpfu.itis.kuzmin.model.role.Role;
 import ru.kpfu.itis.kuzmin.model.zombie.Zombie;
@@ -86,6 +88,17 @@ public class LevelView implements View {
                     return;
                 }
 
+                for (Wall wall: game.getWorld().getWalls()) {
+                    if (wall.getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
+                        return;
+                    }
+                }
+
+                for (Turret turret: game.getWorld().getTurrets()) {
+                    if (turret.getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
+                        return;
+                    }
+                }
 
                 player.setWall(game.getWorld());
 
@@ -113,6 +126,17 @@ public class LevelView implements View {
                     return;
                 }
 
+                for (Wall wall: game.getWorld().getWalls()) {
+                    if (wall.getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
+                        return;
+                    }
+                }
+
+                for (Turret turret: game.getWorld().getTurrets()) {
+                    if (turret.getImage().getBoundsInParent().intersects(testImage.getBoundsInParent())) {
+                        return;
+                    }
+                }
 
                 player.setTurret(game.getWorld());
 

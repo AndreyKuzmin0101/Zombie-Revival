@@ -4,7 +4,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import ru.kpfu.itis.kuzmin.contoller.LevelController;
 
-public abstract class Wall {
+public abstract class Wall implements IWall{
     private double hp;
     private byte type;
     private double startHp;
@@ -32,24 +32,23 @@ public abstract class Wall {
 
     }
 
-
+    @Override
     public double getHp() {
         return hp;
     }
 
+    @Override
     public void setHp(double hp) {
         this.hp = hp;
         this.progressBar.setProgress(hp / this.startHp);
     }
 
+    @Override
     public ImageView getImage() {
         return image;
     }
 
-    public byte getType() {
-        return type;
-    }
-
+    @Override
     public ProgressBar getProgressBar() {
         return progressBar;
     }

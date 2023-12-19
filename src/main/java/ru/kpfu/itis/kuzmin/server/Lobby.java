@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.util.Random;
 
 
-public class Lobby implements Runnable{
+public class Lobby implements ILobby{
     private Server server;
     private Thread thread;
     private Connection player1;
@@ -32,6 +32,7 @@ public class Lobby implements Runnable{
         level.startGame();
     }
 
+    @Override
     public void startGame() {
         this.thread = new Thread(this);
 
@@ -43,6 +44,7 @@ public class Lobby implements Runnable{
         this.thread.start();
     }
 
+    @Override
     public void stopGame(byte reason) {
         if (this.level == null) return;
 
@@ -57,6 +59,7 @@ public class Lobby implements Runnable{
         this.level = null;
     }
 
+    @Override
     public void forwardMessage(Message message, Connection connection) {
         if (player1 == connection) {
             player2.sendMessage(message);
@@ -65,11 +68,13 @@ public class Lobby implements Runnable{
         }
     }
 
+    @Override
     public void sendMessage(Message message) {
         player1.sendMessage(message);
         player2.sendMessage(message);
     }
 
+    @Override
     public void setPlayer2(Connection connection) {
         if (player1 == null){
             player1 = connection;
@@ -78,6 +83,7 @@ public class Lobby implements Runnable{
         }
     }
 
+    @Override
     public Connection getPlayer2(Connection connection) {
         if (player1 == connection) {
             return player2;
@@ -86,6 +92,7 @@ public class Lobby implements Runnable{
         }
     }
 
+    @Override
     public void leave(Connection connection) {
         if (player1 == connection) {
             player1 = null;
@@ -97,6 +104,7 @@ public class Lobby implements Runnable{
         }
     }
 
+    @Override
     public boolean isFull() {
         if (player1 != null && player2 != null) {
             return true;
@@ -104,14 +112,17 @@ public class Lobby implements Runnable{
         return false;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
+    @Override
     public Level getLevel() {
         return level;
     }
